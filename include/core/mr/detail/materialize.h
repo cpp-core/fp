@@ -27,7 +27,7 @@ struct Materialize {
 
 }; // detail
 
-inline auto materialize() {
+inline auto eval() {
     return []<detail::Expression E>(E&& expr) {
 	return detail::Materialize{std::forward<E>(expr)}();
     };

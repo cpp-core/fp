@@ -33,11 +33,11 @@ struct Interface {
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
     }
 
-    auto materialize() {
+    auto eval() {
 	return Materialize{std::move(ref())}();
     }
 
-    auto parallelize(Executor& ex) {
+    auto eval(Executor& ex) {
 	return Parallelize{std::move(ref()), ex}();
     }
     

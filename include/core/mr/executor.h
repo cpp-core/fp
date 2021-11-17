@@ -139,7 +139,7 @@ struct Parallelize {
 
 }; // detail
 
-inline auto parallelize(Executor& ex) {
+inline auto eval(Executor& ex) {
     return [&]<detail::Expression E>(E&& expr) {
 	return detail::Parallelize{std::forward<E>(expr), ex}();
     };
