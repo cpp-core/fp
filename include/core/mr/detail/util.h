@@ -4,10 +4,7 @@
 #pragma once
 #include "core/common.h"
 
-// The `mr` namepsace contains the **MapReduce** functionality enabling the construction
-// and parallel evaluation of a sequence of processing steps including `apply`, `filter`,
-// `map` and `reduce`.
-namespace mr {
+namespace core::mr::detail {
 
 template<class O>
 struct OutputBase {
@@ -44,4 +41,4 @@ concept PipeOp = requires (Op op) {
 template<Expression E>
 using expr_value_t = typename E::value_type;
 
-}; // mr
+}; // core::mr::detail
