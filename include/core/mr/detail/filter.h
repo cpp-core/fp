@@ -8,9 +8,9 @@ namespace core::mr {
 
 namespace detail {
 
-template<class P, class O>
+template<class O, class P>
 struct FilterOutput : OutputBase<O> {
-    FilterOutput(P& predicate, O&& output)
+    FilterOutput(O&& output, P& predicate)
 	: OutputBase<O>(std::forward<O>(output))
 	, predicate_(predicate) {
     }
@@ -24,7 +24,7 @@ private:
     P& predicate_;
 };
 
-template<class P, class O> FilterOutput(P&, O&&) -> FilterOutput<P,O>;
+template<class O, class P> FilterOutput(O&&, P&) -> FilterOutput<O,P>;
 
 template<Expression E, class P>
 struct Filter : Interface<Filter<E,P>> {
@@ -37,7 +37,7 @@ struct Filter : Interface<Filter<E,P>> {
 
     template<class O>
     auto compile(O&& output) {
-	return source_.compile(FilterOutput{predicate_, std::forward<O>(output)});
+	return source_.compile(FilterOutput{std::forward<O>(output), predicate_});
     }
 
     E source_;

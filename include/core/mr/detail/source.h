@@ -8,11 +8,11 @@ namespace core::mr {
 
 namespace detail {
 
-template<class C, class O>
+template<class O, class C>
 struct SourceOutput : OutputBase<O> {
     using Iterator = typename C::iterator;
     
-    SourceOutput(C& data, O&& output)
+    SourceOutput(O&& output, C& data)
 	: OutputBase<O>(std::forward<O>(output))
 	, data_(data) {
     }
@@ -43,6 +43,8 @@ private:
     C& data_;
 };
 
+template <class O, class C> SourceOutput(O&&, C&) -> SourceOutput<O,C>;
+
 template<class C>
 struct Source : Interface<Source<C>> {
     using value_type = typename std::decay_t<C>::value_type;
@@ -52,7 +54,7 @@ struct Source : Interface<Source<C>> {
 
     template<class O>
     auto compile(O&& output) {
-	return SourceOutput{data_, std::forward<O>(output)};
+	return SourceOutput{std::forward<O>(output), data_};
     }
     
 private:
