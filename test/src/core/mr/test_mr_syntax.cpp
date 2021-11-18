@@ -103,20 +103,20 @@ TEST(MapReduce, PipeTransform)
 TEST(MapReduce, DotReduce)
 {
     auto data = env->iota(10);
-    auto r = source(data).reduce(0, [](int& acc, int n) { return acc += n; }).eval();
+    auto r = source(data).reduce(0, [](int& acc, int n) { acc += n; }).eval();
     EXPECT_EQ(r, 45);
 
-    auto r2 = source(env->iota(10)).reduce(0, [](int& acc, int n) { return acc += n; }).eval();
+    auto r2 = source(env->iota(10)).reduce(0, [](int& acc, int n) { acc += n; }).eval();
     EXPECT_EQ(r2, 45);
 }
 
 TEST(MapReduce, PipeReduce)
 {
     auto data = env->iota(10);
-    auto r = data | reduce(0, [](int& acc, int n) { return acc += n; }) | eval();
+    auto r = data | reduce(0, [](int& acc, int n) { acc += n; }) | eval();
     EXPECT_EQ(r, 45);
     
-    auto r2 = env->iota(10) | reduce(0, [](int& acc, int n) { return acc += n; }) | eval();
+    auto r2 = env->iota(10) | reduce(0, [](int& acc, int n) { acc += n; }) | eval();
     EXPECT_EQ(r2, 45);
 }
 
