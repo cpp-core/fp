@@ -6,12 +6,14 @@
 
 namespace core::mr {
 
-template<class T, detail::PipeOp Op>
-auto operator|(std::vector<T>& data, Op&& op) {
-    return op(detail::Source{data});
+template<detail::ContiguousContainer C, class Op>
+requires std::is_invocable_v<Op, detail::Source<C>>
+auto operator|(C&& data, Op&& op) {
+    return op(detail::Source{std::forward<C>(data)});
 }
 
-template<detail::Expression E, detail::PipeOp Op>
+template<detail::Expression E, class Op>
+requires std::is_invocable_v<Op, E>
 auto operator|(E&& expr, Op&& op) {
     return op(std::forward<E>(expr));
 }

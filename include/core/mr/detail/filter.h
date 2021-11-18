@@ -28,7 +28,7 @@ template<class O, class P> FilterOutput(O&&, P&) -> FilterOutput<O,P>;
 
 template<Expression E, class P>
 struct Filter : Interface<Filter<E,P>> {
-    using value_type = std::result_of_t<P&(expr_value_t<E>)>;
+    using value_type = expr_value_t<E>;
     
     Filter(E&& source, P&& predicate)
 	: source_(std::forward<E>(source))

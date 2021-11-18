@@ -3,6 +3,7 @@
 
 #pragma once
 #include "core/common.h"
+#include "core/mp/same.h"
 
 namespace core::mr::detail {
 
@@ -17,11 +18,6 @@ struct OutputBase {
 
 template<class O> OutputBase(O&&) -> OutputBase<O>;
 
-struct MapReduceExprProto {
-    using value_type = int;
-    void compile() {}
-};
-
 template<class T>
 concept OutputExpression = requires (T t) {
     typename T::Output;
@@ -33,12 +29,21 @@ concept Expression = requires (T t) {
     t.compile;
 };
 
-template<class Op>
-concept PipeOp = requires (Op op) {
-    std::is_invocable_v<Op, MapReduceExprProto>;
-};
-
 template<Expression E>
 using expr_value_t = typename E::value_type;
+
+template<class I>
+concept ContiguousIterator = requires (I iter) {
+    requires std::is_same_v<typename std::iterator_traits<std::decay_t<I>>::iterator_category,
+    std::random_access_iterator_tag>;
+};
+
+template<class C>
+concept ContiguousContainer = requires (C c) {
+    requires ContiguousIterator<typename std::decay_t<C>::iterator>;
+    typename std::decay_t<C>::value_type;
+    c.begin();
+    c.end();
+};
 
 }; // core::mr::detail

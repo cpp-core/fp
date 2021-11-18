@@ -5,7 +5,6 @@
 #include "core/mr/mr.h"
 #include "coro/stream/stream.h"
 
-using namespace core;
 using namespace core::mr;
 
 class Environment : public ::testing::Environment {
@@ -57,8 +56,48 @@ TEST(MapReduce, PipeEval)
     auto r = data | eval();
     EXPECT_EQ(r, data);
     
-    // auto r2 = env->iota(10) | eval();
-    // EXPECT_EQ(r2, data);
+    auto r2 = env->iota(10) | eval();
+    EXPECT_EQ(r2, data);
+}
+
+TEST(MapReduce, DotFilter)
+{
+    auto data = env->iota(10);
+    auto r = source(data).filter([](int n) { return true; }).eval();
+    EXPECT_EQ(r, data);
+
+    auto r2 = source(env->iota(10)).filter([](int n) { return true; }).eval();
+    EXPECT_EQ(r2, data);
+}
+
+TEST(MapReduce, PipeFilter)
+{
+    auto data = env->iota(10);
+    auto r = data | filter([](int n) { return true; }) | eval();
+    EXPECT_EQ(r, data);
+    
+    auto r2 = env->iota(10) | filter([](int n) { return true; }) | eval();
+    EXPECT_EQ(r2, data);
+}
+
+TEST(MapReduce, DotTransform)
+{
+    auto data = env->iota(10);
+    auto r = source(data).transform([](int n) { return n; }).eval();
+    EXPECT_EQ(r, data);
+
+    auto r2 = source(env->iota(10)).transform([](int n) { return n; }).eval();
+    EXPECT_EQ(r2, data);
+}
+
+TEST(MapReduce, PipeTransform)
+{
+    auto data = env->iota(10);
+    auto r = data | transform([](int n) { return n; }) | eval();
+    EXPECT_EQ(r, data);
+    
+    auto r2 = env->iota(10) | transform([](int n) { return n; }) | eval();
+    EXPECT_EQ(r2, data);
 }
 
 int main(int argc, char *argv[])
