@@ -30,7 +30,7 @@ concept OutputExpression = requires (T t) {
 
 template<class T>
 concept Expression = requires (T t) {
-    typename T::value_type;
+    typename std::decay_t<T>::value_type;
     t.compile;
 };
 
@@ -49,6 +49,16 @@ concept ContiguousContainer = requires (C c) {
     typename std::decay_t<C>::value_type;
     c.begin();
     c.end();
+};
+
+template<class P, class T>
+concept Predicate = requires (P p, T t) {
+    requires std::is_invocable_v<std::decay_t<P>, std::decay_t<T>>;
+};
+
+template<class F, class T>
+concept Transformer = requires (F f, T t) {
+    requires std::is_invocable_v<std::decay_t<F>, std::decay_t<T>>;
 };
 
 }; // core::mr::detail

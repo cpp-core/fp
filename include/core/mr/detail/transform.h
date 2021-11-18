@@ -47,7 +47,8 @@ struct Transform : Interface<Transform<E,F>> {
 
 template<class F>
 auto transform(F&& function) {
-    return [function = std::forward<F>(function)]<detail::Expression E>(E&& expr) mutable {
+    return [function = std::forward<F>(function)]<detail::Expression E>(E&& expr) mutable
+	requires detail::Transformer<F, detail::expr_value_t<E>> {
 	return detail::Transform{std::forward<E>(expr), std::forward<F>(function)};
     };
 }
