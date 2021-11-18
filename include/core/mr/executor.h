@@ -84,8 +84,7 @@ struct Executor : public detail::ExecutorBase {
 	    while ((idx = counter.fetch_add(chunk)) < global_count) {
 		auto begin = global_begin + idx;
 		auto end = std::min(begin + chunk, global_end);
-		for (auto iter = begin; iter < end; ++iter)
-		    e(*iter);
+		e(begin, end);
 		
 		Result r = expr.initial_value();
 		for (auto& result : subexpr_result)
