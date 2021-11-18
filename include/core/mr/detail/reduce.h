@@ -33,7 +33,7 @@ private:
 
 template<class O, class A, class R, class C> ReduceOutput(O&&, A, R&, C&) -> ReduceOutput<O,A,R,C>;
 
-template<Expression E, class A, class R, class C>
+template<Expression E, class A, class R, class C = R>
 struct Reduce : Interface<Reduce<E,A,R,C>> {
     using value_type = A;
     
@@ -42,6 +42,12 @@ struct Reduce : Interface<Reduce<E,A,R,C>> {
 	, accumulator_(std::forward<A>(accumulator))
 	, reducer_(std::forward<R>(reducer))
 	, combiner_(std::forward<C>(combiner)) {
+    }
+
+    Reduce(E&& source, A&& accumulator, R&& reducer)
+	: source_(std::forward<E>(source))
+	, accumulator_(std::forward<A>(accumulator))
+	, reducer_(std::forward<R>(reducer)) {
     }
 
     template<class O>
@@ -67,6 +73,13 @@ auto reduce(A accumulator, R reducer, C combiner) {
 	    std::move(accumulator),
 	    std::move(reducer),
 	    std::move(combiner)};
+    };
+}
+
+template<class A, class R>
+auto reduce(A accumulator, R reducer) {
+    return [=]<detail::Expression E>(E&& expr) {
+	return detail::Reduce{std::forward<E>(expr), std::move(accumulator), std::move(reducer)};
     };
 }
 

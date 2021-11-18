@@ -16,8 +16,11 @@ struct Filter;
 template<Expression>
 struct Materialize;
 
-template<detail::Expression>
+template<Expression>
 struct Parallelize;
+
+template<Expression,class,class,class>
+struct Reduce;
 
 template<class>
 struct Source;
@@ -40,7 +43,20 @@ struct Interface {
     auto eval(Executor& ex) {
 	return Parallelize{std::move(ref()), ex}();
     }
-    
+
+    template<class A, class R, class C>
+    auto reduce(A&& accumulator, R&& reducer, C&& combiner) {
+	return Reduce{std::move(ref()),
+	    std::forward<A>(accumulator),
+	    std::forward<R>(reducer),
+	    std::forward<C>(combiner)};
+    }
+	
+    template<class A, class R>
+    auto reduce(A&& accumulator, R&& reducer) {
+	return Reduce{std::move(ref()), std::forward<A>(accumulator), std::forward<R>(reducer)};
+    }
+	
     template<class F>
     auto transform(F&& function) {
 	return Transform{std::move(ref()), std::forward<F>(function)};
