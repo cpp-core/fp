@@ -58,6 +58,22 @@ struct Reduce : Interface<Reduce<E,A,R,C>> {
 					    combiner_});
     }
 
+    auto& source() {
+	return source_;
+    }
+
+    const auto& initial_value() const {
+	return accumulator_;
+    }
+
+    auto& reducer() {
+	return reducer_;
+    }
+
+    auto& combiner() {
+	return combiner_;
+    }
+    
     E source_;
     A accumulator_;
     R reducer_;
@@ -67,19 +83,21 @@ struct Reduce : Interface<Reduce<E,A,R,C>> {
 }; // detail
 
 template<class A, class R, class C>
-auto reduce(A accumulator, R reducer, C combiner) {
-    return [=]<detail::Expression E>(E&& expr) {
+auto reduce(A acc, R r, C c) {
+    return [acc = std::forward<A>(acc), r = std::forward<R>(r), c = std::forward<C>(c)]
+	<detail::Expression E>(E&& expr) {
 	return detail::Reduce{std::forward<E>(expr),
-	    std::move(accumulator),
-	    std::move(reducer),
-	    std::move(combiner)};
+	    std::forward<A>(acc),
+	    std::forward<R>(r),
+	    std::forward<C>(c)};
     };
 }
 
 template<class A, class R>
-auto reduce(A accumulator, R reducer) {
-    return [=]<detail::Expression E>(E&& expr) {
-	return detail::Reduce{std::forward<E>(expr), std::move(accumulator), std::move(reducer)};
+auto reduce(A&& acc, R&& r) {
+    return [acc = std::forward<A>(acc), r = std::forward<R>(r)]
+	<detail::Expression E>(E&& expr) mutable {
+	return detail::Reduce{std::forward<E>(expr), std::forward<A>(acc), std::forward<R>(r)};
     };
 }
 

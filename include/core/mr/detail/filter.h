@@ -48,9 +48,9 @@ struct Filter : Interface<Filter<E,P>> {
 }; // detail
 
 template<class P>
-auto filter(P predicate) {
-    return [=]<detail::Expression E>(E&& expr) {
-	return detail::Filter{std::forward<E>(expr), std::move(predicate)};
+auto filter(P&& predicate) {
+    return [predicate = std::forward<P>(predicate)]<detail::Expression E>(E&& expr) mutable {
+	return detail::Filter{std::forward<E>(expr), std::forward<P>(predicate)};
     };
 };
 

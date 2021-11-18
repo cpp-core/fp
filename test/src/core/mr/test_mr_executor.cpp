@@ -102,6 +102,35 @@ TEST(MapReduceExecutor, PipeTransform)
     EXPECT_EQ(r2, data);
 }
 
+TEST(MapReduceExecutor, DotReduce)
+{
+    auto data = env->iota(10);
+    auto r = source(data)
+	.reduce(0, [](int& acc, int n) { return acc += n; })
+	.eval(env->executor())
+	;
+    EXPECT_EQ(r, 45);
+
+    auto r2 = source(env->iota(10))
+	.reduce(0, [](int& acc, int n) { return acc += n; })
+	.eval(env->executor());
+    EXPECT_EQ(r2, 45);
+}
+
+TEST(MapReduceExecutor, PipeReduce)
+{
+    auto data = env->iota(10);
+    auto r = data
+	| reduce(0, [](int& acc, int n) { return acc += n; })
+	| eval(env->executor());
+    EXPECT_EQ(r, 45);
+    
+    auto r2 = env->iota(10)
+	| reduce(0, [](int& acc, int n) { return acc += n; })
+	| eval(env->executor());
+    EXPECT_EQ(r2, 45);
+}
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
