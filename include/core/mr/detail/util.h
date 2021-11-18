@@ -13,6 +13,11 @@ struct OutputBase {
     OutputBase(O&& output)
 	: output_(std::forward<O>(output)) {
     }
+
+    auto& result() {
+	return output_.result();
+    }
+    
     O output_;
 };
 

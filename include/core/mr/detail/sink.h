@@ -13,6 +13,9 @@ struct Sink : public std::vector<T> {
     void operator()(auto elem) {
 	this->push_back(elem);
     }
+    auto& result() {
+	return *this;
+    }
 };
 
 }; // core::mr::detail

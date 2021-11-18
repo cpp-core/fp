@@ -34,9 +34,10 @@ struct SourceOutput : OutputBase<O> {
 	    this->output_(*iter);
     }
     
-    void run() {
+    auto& run() {
 	for (auto&& elem : data_)
 	    this->output_(elem);
+	return this->output_.result();
     }
 
 private:

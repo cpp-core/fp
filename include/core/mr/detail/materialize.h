@@ -4,6 +4,8 @@
 #pragma once
 #include "core/mr/detail/source.h"
 #include "core/mr/detail/sink.h"
+#include "core/mr/detail/reduce.h"
+#include "core/mp/same.h"
 
 namespace core::mr {
 
@@ -18,8 +20,7 @@ struct Materialize {
     auto operator()() {
 	Sink<expr_value_t<E>> result;
 	auto cexpr = expr_.compile(result);
-	cexpr.run();
-	return result;
+	return cexpr.run();
     }
     
     E expr_;
