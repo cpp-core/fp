@@ -8,13 +8,12 @@ namespace core::mr {
 
 namespace detail {
 		  
-template<class O, class A, class R, class C>
+template<class O, class A, class R>
 struct ReduceOutput : OutputBase<O> {
-    ReduceOutput(O&& output, A accumulator, R& reducer, C& combiner)
+    ReduceOutput(O&& output, A accumulator, R& reducer)
 	: OutputBase<O>(std::forward<O>(output))
 	, accumulator_(accumulator)
-	, reducer_(reducer)
-	, combiner_(combiner) {
+	, reducer_(reducer) {
     }
 
     void operator()(const auto& elem) {
@@ -28,14 +27,13 @@ struct ReduceOutput : OutputBase<O> {
 private:
     A accumulator_;
     R& reducer_;
-    C& combiner_;
 };
 
-template<class O, class A, class R, class C> ReduceOutput(O&&, A, R&, C&) -> ReduceOutput<O,A,R,C>;
+template<class O, class A, class R> ReduceOutput(O&&, A, R&) -> ReduceOutput<O,A,R&>;
 
 template<Expression E, class A, class R, class C = R>
 struct Reduce : Interface<Reduce<E,A,R,C>> {
-    using value_type = A;
+    using value_type = std::decay_t<A>;
     
     Reduce(E&& source, A&& accumulator, R&& reducer, C&& combiner)
 	: source_(std::forward<E>(source))
@@ -54,8 +52,7 @@ struct Reduce : Interface<Reduce<E,A,R,C>> {
     auto compile(O&& output) {
 	return source_.compile(ReduceOutput{std::forward<O>(output),
 					    accumulator_,
-					    reducer_,
-					    combiner_});
+					    reducer_});
     }
 
     auto& source() {
@@ -80,12 +77,16 @@ struct Reduce : Interface<Reduce<E,A,R,C>> {
     C combiner_;
 };
 
+template<class E, class A, class R> Reduce(E&&, A&, R&&) -> Reduce<E,A&,R>;
+template<class E, class A, class R, class C> Reduce(E&&, A&, R&&, C&&) -> Reduce<E,A&,R,C>;
+
 }; // detail
 
 template<class A, class R, class C>
-auto reduce(A acc, R r, C c) {
+auto reduce(A&& acc, R&& r, C&& c) {
     return [acc = std::forward<A>(acc), r = std::forward<R>(r), c = std::forward<C>(c)]
-	<detail::Expression E>(E&& expr) {
+	<detail::Expression E>(E&& expr) mutable
+	requires (detail::Reducer<E,A,R> and detail::Combiner<E,A,C>) {
 	return detail::Reduce{std::forward<E>(expr),
 	    std::forward<A>(acc),
 	    std::forward<R>(r),
@@ -96,7 +97,8 @@ auto reduce(A acc, R r, C c) {
 template<class A, class R>
 auto reduce(A&& acc, R&& r) {
     return [acc = std::forward<A>(acc), r = std::forward<R>(r)]
-	<detail::Expression E>(E&& expr) mutable {
+	<detail::Expression E>(E&& expr) mutable
+	requires detail::Reducer<E, A, R> {
 	return detail::Reduce{std::forward<E>(expr), std::forward<A>(acc), std::forward<R>(r)};
     };
 }

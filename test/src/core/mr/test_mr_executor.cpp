@@ -131,6 +131,64 @@ TEST(MapReduceExecutor, PipeReduce)
     EXPECT_EQ(r2, 45);
 }
 
+TEST(MapReduceExecutor, DotReduceMixed)
+{
+    std::pair<int,int> extrema{std::numeric_limits<int>::max(), std::numeric_limits<int>::min()};
+    auto data = env->iota(10);
+    auto r = source(data)
+	.reduce(extrema, [](auto& acc, int n) {
+	    acc.first = std::min(acc.first, n);
+	    acc.second = std::max(acc.second, n);
+	}, [](auto& acc, auto& other) {
+	    acc.first = std::min(acc.first, other.first);
+	    acc.second = std::max(acc.second, other.second);
+	})
+	.eval(env->executor());
+    EXPECT_EQ(r.first, 0);
+    EXPECT_EQ(r.second, 9);
+
+    auto r2 = source(env->iota(10))
+	.reduce(extrema, [](auto& acc, int n) {
+	    acc.first = std::min(acc.first, n);
+	    acc.second = std::max(acc.second, n);
+	}, [](auto& acc, auto other) {
+	    acc.first = std::min(acc.first, other.first);
+	    acc.second = std::max(acc.second, other.second);
+	})
+	.eval(env->executor());
+    EXPECT_EQ(r2.first, 0);
+    EXPECT_EQ(r2.second, 9);
+}
+
+TEST(MapReduceExecutor, PipeReduceMixed)
+{
+    std::pair<int,int> extrema{std::numeric_limits<int>::max(), std::numeric_limits<int>::min()};
+    auto data = env->iota(10);
+    auto r = data
+	| reduce(extrema, [](auto& acc, int n) {
+	    acc.first = std::min(acc.first, n);
+	    acc.second = std::max(acc.second, n);
+	}, [](auto& acc, auto& other) {
+	    acc.first = std::min(acc.first, other.first);
+	    acc.second = std::max(acc.second, other.second);
+	})
+	| eval(env->executor());
+    EXPECT_EQ(r.first, 0);
+    EXPECT_EQ(r.second, 9);
+
+    auto r2 = env->iota(10)
+	| reduce(extrema, [](auto& acc, int n) {
+	    acc.first = std::min(acc.first, n);
+	    acc.second = std::max(acc.second, n);
+	}, [](auto& acc, auto& other) {
+	    acc.first = std::min(acc.first, other.first);
+	    acc.second = std::max(acc.second, other.second);
+	})
+	| eval(env->executor());
+    EXPECT_EQ(r2.first, 0);
+    EXPECT_EQ(r2.second, 9);
+}
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);

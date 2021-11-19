@@ -89,11 +89,11 @@ struct Executor : public detail::ExecutorBase {
 		Result r = expr.initial_value();
 		for (auto& result : subexpr_result)
 		    reduce(r, result);
+		subexpr_result.clear();
 		
 		wait_for_sequencer(idx);
 		combine(global_result, r);
 		advance_sequencer(chunk);
-		subexpr_result.clear();
 	    }
 	});
 	

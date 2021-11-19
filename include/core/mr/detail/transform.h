@@ -8,9 +8,9 @@ namespace core::mr {
 
 namespace detail {
 		  
-template<class F, class O>
+template<class O, class F>
 struct TransformOutput : OutputBase<O> {
-    TransformOutput(F& function, O&& output)
+    TransformOutput(O&& output, F& function)
 	: OutputBase<O>(std::forward<O>(output))
 	, function_(function) {
     }
@@ -23,7 +23,7 @@ private:
     F& function_;
 };
 
-template<class F, class O> TransformOutput(F&, O&&) -> TransformOutput<F,O>;
+template<class O, class F> TransformOutput(O&&, F&) -> TransformOutput<O,F&>;
 
 template<Expression E, class F>
 struct Transform : Interface<Transform<E,F>> {
@@ -36,7 +36,7 @@ struct Transform : Interface<Transform<E,F>> {
 
     template<class O>
     auto compile(O&& output) {
-	return source_.compile(TransformOutput{function_, std::forward<O>(output)});
+	return source_.compile(TransformOutput{std::forward<O>(output), function_});
     }
 
     E source_;

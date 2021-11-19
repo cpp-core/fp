@@ -35,7 +35,7 @@ concept Expression = requires (T t) {
 };
 
 template<Expression E>
-using expr_value_t = typename E::value_type;
+using expr_value_t = typename std::decay_t<E>::value_type;
 
 template<class I>
 concept ContiguousIterator = requires (I iter) {
@@ -59,6 +59,16 @@ concept Predicate = requires (P p, T t) {
 template<class F, class T>
 concept Transformer = requires (F f, T t) {
     requires std::is_invocable_v<std::decay_t<F>, std::decay_t<T>>;
+};
+
+template<class E, class A, class R>
+concept Reducer = requires (E e, A a, R r) {
+    requires std::is_invocable_v<R, A&, detail::expr_value_t<E>>;
+};
+
+template<class E, class A, class C>
+concept Combiner = requires (E e, A a, C c) {
+    requires std::is_invocable_v<C, A&, A>;
 };
 
 }; // core::mr::detail

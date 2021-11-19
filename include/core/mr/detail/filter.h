@@ -25,7 +25,7 @@ private:
     P& predicate_;
 };
 
-template<class O, class P> FilterOutput(O&&, P&) -> FilterOutput<O,P>;
+template<class O, class P> FilterOutput(O&&, P&) -> FilterOutput<O,P&>;
 
 template<Expression E, class P>
 struct Filter : Interface<Filter<E,P>> {
