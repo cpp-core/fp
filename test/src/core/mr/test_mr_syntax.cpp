@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include "core/mr/mr.h"
 #include "coro/stream/stream.h"
+#include "core/utility/fixed.h"
 
 using namespace core::mr;
 
@@ -16,13 +17,20 @@ public:
     auto iota(int size) {
 	return coro::iota<int>(size) | coro::collect<std::vector>();
     }
+
+    void iota(std::vector<int>& data, int size) {
+	for (auto elem : this->iota(size))
+	    data.push_back(elem);
+    }
 };
 
 Environment *env{nullptr};
 
 TEST(MapReduce, Dot)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+    
     auto r = source(data)
 	.filter([](int n) { return n % 2 == 0; })
 	.transform([](int n) { return n * n; })
@@ -32,7 +40,9 @@ TEST(MapReduce, Dot)
 
 TEST(MapReduce, Pipe)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = data
 	| filter([](int n) { return n % 2 == 0; })
 	| transform([](int n) { return n * n; })
@@ -42,7 +52,9 @@ TEST(MapReduce, Pipe)
 
 TEST(MapReduce, DotEval)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = source(data).eval();
     EXPECT_EQ(r, data);
 
@@ -52,7 +64,9 @@ TEST(MapReduce, DotEval)
 
 TEST(MapReduce, PipeEval)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = data | eval();
     EXPECT_EQ(r, data);
     
@@ -62,7 +76,9 @@ TEST(MapReduce, PipeEval)
 
 TEST(MapReduce, DotFilter)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = source(data).filter([](int n) { return true; }).eval();
     EXPECT_EQ(r, data);
 
@@ -72,7 +88,9 @@ TEST(MapReduce, DotFilter)
 
 TEST(MapReduce, PipeFilter)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = data | filter([](int n) { return true; }) | eval();
     EXPECT_EQ(r, data);
     
@@ -82,7 +100,9 @@ TEST(MapReduce, PipeFilter)
 
 TEST(MapReduce, DotTransform)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = source(data).transform([](int n) { return n; }).eval();
     EXPECT_EQ(r, data);
 
@@ -92,7 +112,9 @@ TEST(MapReduce, DotTransform)
 
 TEST(MapReduce, PipeTransform)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = data | transform([](int n) { return n; }) | eval();
     EXPECT_EQ(r, data);
     
@@ -102,7 +124,9 @@ TEST(MapReduce, PipeTransform)
 
 TEST(MapReduce, DotReduce)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = source(data).reduce(0, [](int& acc, int n) { acc += n; }).eval();
     EXPECT_EQ(r, 45);
 
@@ -112,7 +136,9 @@ TEST(MapReduce, DotReduce)
 
 TEST(MapReduce, PipeReduce)
 {
-    auto data = env->iota(10);
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     auto r = data | reduce(0, [](int& acc, int n) { acc += n; }) | eval();
     EXPECT_EQ(r, 45);
     
@@ -145,8 +171,10 @@ TEST(MapReduce, DotReduceMixed)
 
 TEST(MapReduce, PipeReduceMixed)
 {
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
     std::pair<int,int> extrema{std::numeric_limits<int>::max(), std::numeric_limits<int>::min()};
-    auto data = env->iota(10);
     auto r = data
 	| reduce(extrema, [](auto& acc, int n) {
 	    acc.first = std::min(acc.first, n);
