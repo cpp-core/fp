@@ -194,6 +194,44 @@ TEST(MapReduce, PipeReduceMixed)
     EXPECT_EQ(r2.second, 9);
 }
 
+TEST(MapReduce, DotApply)
+{
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
+    int sum{0};
+    source(data).apply([&](int& n) { n *= 2; sum += n; }).eval();
+    EXPECT_EQ(sum, 90);
+    int count{0};
+    for (auto& elem : data) {
+	EXPECT_EQ(elem, 2 * count);
+	++count;
+    }
+
+    int sum2{0};
+    source(env->iota(10)).apply([&](int& n) { sum2 += n; }).eval();
+    EXPECT_EQ(sum2, 45);
+}
+
+TEST(MapReduce, PipeApply)
+{
+    core::Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
+    int sum{0};
+    data | apply([&](int& n) { n *= 2; sum += n; }) | eval();
+    EXPECT_EQ(sum, 90);
+    int count{0};
+    for (auto& elem : data) {
+	EXPECT_EQ(elem, 2 * count);
+	++count;
+    }
+
+    int sum2{0};
+    env->iota(10) | apply([&](int& n) { sum2 += n; }) | eval();
+    EXPECT_EQ(sum2, 45);
+}
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);

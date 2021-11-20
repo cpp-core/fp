@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include "core/mr/mr.h"
 #include "core/mr/executor.h"
+#include "core/utility/fixed.h"
 #include "coro/stream/stream.h"
 
 using namespace core::mr;
@@ -187,6 +188,35 @@ TEST(MapReduceExecutor, PipeReduceMixed)
 	| eval(env->executor());
     EXPECT_EQ(r2.first, 0);
     EXPECT_EQ(r2.second, 9);
+}
+
+TEST(MapReduceExecutor, DotApply)
+{
+    auto data = env->iota(10);
+    source(data).apply([](int& n) { n *= 2; }).eval(env->executor());
+    int count{0};
+    for (auto& elem : data) {
+	EXPECT_EQ(elem, 2 * count);
+	++count;
+    }
+
+    int sum2{0};
+    source(env->iota(10)).apply([&](int& n) { sum2 += n; }).eval(env->executor());
+}
+
+TEST(MapReduceExecutor, PipeApply)
+{
+    auto data = env->iota(10);
+
+    data | apply([](int& n) { n *= 2; }) | eval(env->executor());
+    int count{0};
+    for (auto& elem : data) {
+	EXPECT_EQ(elem, 2 * count);
+	++count;
+    }
+
+    int sum2{0};
+    env->iota(10) | apply([&](int& n) { sum2 += n; }) | eval(env->executor());
 }
 
 int main(int argc, char *argv[])

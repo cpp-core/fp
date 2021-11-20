@@ -40,6 +40,11 @@ struct SourceOutput : OutputBase<O> {
 	return this->output_.result();
     }
 
+    void apply() {
+	for (auto&& elem : data_)
+	    this->output_(elem);
+    }
+
 private:
     C& data_;
 };

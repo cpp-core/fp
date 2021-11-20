@@ -25,7 +25,8 @@ struct Executor : public detail::ExecutorBase {
     }
     
     template<detail::Expression E>
-    requires (not core::mp::is_same_template_v<E, detail::Reduce>)
+    requires (not core::mp::is_same_template_v<E, detail::Reduce> and
+	      not core::mp::is_same_template_v<E, detail::Apply>)
     auto materialize(E& expr, size_t max_chunk = 4096) {
 	using value_type = detail::expr_value_t<E>;
 	using Result = std::vector<value_type>;
@@ -56,6 +57,28 @@ struct Executor : public detail::ExecutorBase {
 
 	finish_operation();
 	return global_result;
+    }
+
+    template<detail::Expression E>
+    requires (core::mp::is_same_template_v<E, detail::Apply>)
+    void materialize(E& expr, size_t max_chunk = 4096) {
+	auto eproto = expr.compile();
+	auto global_begin = eproto.begin();
+	auto global_end = eproto.end();
+	auto global_count = global_end - global_begin;
+	auto chunk = chunk_size(max_chunk, global_count);
+
+	std::atomic counter{0};
+	assign_functor([&]() {
+	    size_t idx;
+	    while ((idx = counter.fetch_add(chunk)) < global_count) {
+		auto begin = global_begin + idx;
+		auto end = std::min(begin + chunk, global_end);
+		eproto(begin, end);
+	    }
+	});
+
+	finish_operation();
     }
 
     template<class E>

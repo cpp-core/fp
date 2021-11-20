@@ -11,6 +11,9 @@ struct Executor;
 namespace core::mr::detail {
 
 template<Expression, class>
+struct Apply;
+
+template<Expression, class>
 struct Filter;
 
 template<Expression>
@@ -30,6 +33,11 @@ struct Transform;
 
 template<class T>
 struct Interface {
+
+    template<class F>
+    auto apply(F&& function) {
+	return Apply{std::move(ref()), std::forward<F>(function)};
+    }
     
     template<class P>
     auto filter(P&& predicate) {

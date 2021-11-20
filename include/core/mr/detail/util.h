@@ -63,12 +63,17 @@ concept Transformer = requires (F f, T t) {
 
 template<class E, class A, class R>
 concept Reducer = requires (E e, A a, R r) {
-    requires std::is_invocable_v<R, A&, detail::expr_value_t<E>>;
+    requires std::is_invocable_v<R, A&, expr_value_t<E>>;
 };
 
 template<class E, class A, class C>
 concept Combiner = requires (E e, A a, C c) {
     requires std::is_invocable_v<C, A&, A>;
+};
+
+template<class F, class T>
+concept Applicator = requires (F f, T t) {
+    requires std::is_invocable_v<F, std::decay_t<T>&>;
 };
 
 }; // core::mr::detail

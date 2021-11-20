@@ -2,6 +2,7 @@
 //
 
 #pragma once
+#include "core/mr/detail/apply.h"
 #include "core/mr/detail/chaining.h"
 #include "core/mr/detail/filter.h"
 #include "core/mr/detail/interface.h"
