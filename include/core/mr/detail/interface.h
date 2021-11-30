@@ -48,8 +48,8 @@ struct Interface {
 	return Materialize{std::move(ref())}();
     }
 
-    auto eval(Executor& ex) {
-	return Parallelize{std::move(ref()), ex}();
+    auto eval(Executor& ex, std::optional<size_t> max_chunk = std::nullopt) {
+	return Parallelize{std::move(ref()), ex, max_chunk}();
     }
 
     template<class A, class R, class C>

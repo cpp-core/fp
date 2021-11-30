@@ -130,17 +130,20 @@ namespace detail {
 
 template<Expression E>
 struct Parallelize {
-    Parallelize(E&& expr, Executor& ex)
+    Parallelize(E&& expr, Executor& ex, std::optional<size_t> max_chunk = std::nullopt)
 	: expr_(std::forward<E>(expr))
-	, ex_(ex) {
+	, ex_(ex)
+	, max_chunk_(max_chunk) {
     }
 
     auto operator()() {
-	return ex_.materialize(expr_);
+	if (max_chunk_) return ex_.materialize(expr_, *max_chunk_);
+	else return ex_.materialize(expr_);
     }
 
     E expr_;
     Executor& ex_;
+    std::optional<size_t> max_chunk_;
 };
 
 }; // detail
