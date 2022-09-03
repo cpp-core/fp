@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "core/mr/mr.h"
 #include "coro/stream/stream.h"
-#include "core/types/type_name.h"
+#include "core/type/type_name.h"
 
 using namespace core::mr::detail;
 
