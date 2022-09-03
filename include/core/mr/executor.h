@@ -1,4 +1,4 @@
-// Copyright (C) 2017, 2019, 2021 by Mark Melton
+// Copyright (C) 2017, 2019, 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -6,7 +6,7 @@
 #include "core/mr/detail/executor_base.h"
 #include "core/mr/detail/sink.h"
 #include "core/mp/same.h"
-#include "core/utility/type_name.h"
+#include "core/types/type_name.h"
 
 namespace core::mr {
 

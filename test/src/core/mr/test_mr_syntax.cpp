@@ -1,10 +1,10 @@
-// Copyright 2021 by Mark Melton
+// Copyright 2021, 2022 by Mark Melton
 //
 
 #include <gtest/gtest.h>
 #include "core/mr/mr.h"
 #include "coro/stream/stream.h"
-#include "core/utility/fixed.h"
+#include "core/types/fixed.h"
 
 using namespace core::mr;
 
