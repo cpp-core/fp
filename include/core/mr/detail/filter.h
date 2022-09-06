@@ -1,4 +1,4 @@
-// Copyright (C) 2021 by Mark Melton
+// Copyright (C) 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -47,6 +47,8 @@ struct Filter : Interface<Filter<E,P>> {
 
 }; // detail
 
+/// Returns a filter node that applies the given ``predicate``.
+///
 template<class P>
 auto filter(P&& predicate) {
     return [predicate = std::forward<P>(predicate)]

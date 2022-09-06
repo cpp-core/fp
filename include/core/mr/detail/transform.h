@@ -1,4 +1,4 @@
-// Copyright (C) 2021 by Mark Melton
+// Copyright (C) 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -45,6 +45,8 @@ struct Transform : Interface<Transform<E,F>> {
 
 }; // detail
 
+/// Returns a transform node that applies the given ``function``.
+///
 template<class F>
 auto transform(F&& function) {
     return [function = std::forward<F>(function)]<detail::Expression E>(E&& expr) mutable

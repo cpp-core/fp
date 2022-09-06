@@ -1,4 +1,4 @@
-// Copyright (C) 2021 by Mark Melton
+// Copyright (C) 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -94,6 +94,9 @@ auto reduce(A&& acc, R&& r, C&& c) {
     };
 }
 
+/// Returns a *Reducer* node that applies the reducer ``r`` to update
+/// the accumulator ``acc``.
+///
 template<class A, class R>
 auto reduce(A&& acc, R&& r) {
     return [acc = std::forward<A>(acc), r = std::forward<R>(r)]

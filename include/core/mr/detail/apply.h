@@ -1,4 +1,4 @@
-// Copyright (C) 2021 by Mark Melton
+// Copyright (C) 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -46,6 +46,8 @@ template<class E, class F> Apply(E&&, F&) -> Apply<E,F&>;
 
 }; // detail
 
+/// Returns an apply node that applies the given ``function``.
+///
 template<class F>
 auto apply(F&& function) {
     return [function = std::forward<F>(function)]<detail::Expression E>(E&& expr) mutable
