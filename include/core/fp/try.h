@@ -2,6 +2,7 @@
 //
 
 #pragma once
+#include <string>
 #include <variant>
 #include "core/mp/same.h"
 #include "core/fp/detail/decorator.h"
@@ -19,7 +20,7 @@ struct TrySuccess : Decorator<T> {
     using Base = Decorator<T>;
     using Base::Base;
 };
-       
+
 struct TryFailure {
     // Returns true if this Failure contains an exception.
     operator bool() const { return !!eptr_; }
@@ -28,14 +29,14 @@ struct TryFailure {
     // exception).
     void rethrow() const {
 	if (not eptr_)
-	    throw core::runtime_error("Failure: attempt to rethrow with no exception");
+	    throw std::runtime_error("Failure: attempt to rethrow with no exception");
 	std::rethrow_exception(eptr_);
     }
 
     // Returns a string decribing the contained exception.
-    string what() const {
+    std::string what() const {
 	if (not eptr_)
-	    return "no exception"s;
+	    return "no exception";
 	try {
 	    std::rethrow_exception(eptr_);
 	} catch (const std::exception& e) {
@@ -43,9 +44,9 @@ struct TryFailure {
 	} catch (const std::string& s) {
 	    return s;
 	} catch (const char *p) {
-	    return string{p};
+	    return std::string{p};
 	} catch (...) {
-	    return "exception with no information"s;
+	    return "exception with no information";
 	}
     }
     

@@ -8,6 +8,7 @@
 #include "core/fp/option.h"
 
 using namespace core::fp;
+using namespace std::literals::string_literals;
 
 TEST(Try, ConstructSuccess)
 {

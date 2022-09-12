@@ -7,6 +7,7 @@
 #include "core/fp/match.h"
 
 using namespace core::fp;
+using namespace std::literals::string_literals;
 
 TEST(Option, Construct)
 {
