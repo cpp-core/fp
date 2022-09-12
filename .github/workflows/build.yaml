@@ -36,7 +36,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: melton1968/cxx-depends
-        ref: migrate
+        ref: main
         path: cxx-depends
         
     - name: Build dependencies
