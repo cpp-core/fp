@@ -23,7 +23,6 @@ jobs:
           ${{ secrets.CXX_DEPENDS }}
           ${{ secrets.CXX_CORE_PP }}
           ${{ secrets.CXX_CORE_MP }}
-          ${{ secrets.CXX_CORE_TUPLE }}
           ${{ secrets.CXX_CORE_FP }}
         
     - name: Checkout cxx-core-fp
