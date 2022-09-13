@@ -6,7 +6,6 @@
 #include "core/mr/detail/executor_base.h"
 #include "core/mr/detail/sink.h"
 #include "core/mp/same.h"
-#include "core/type/type_name.h"
 
 namespace core::mr {
 
