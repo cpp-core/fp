@@ -3,10 +3,10 @@
 
 #pragma once
 #include <thread>
-#include "core/concurrent/barrier.h"
-#include "core/concurrent/gate.h"
-#include "core/concurrent/latch.h"
-#include "core/concurrent/sequencer.h"
+#include "core/cc/barrier.h"
+#include "core/cc/gate.h"
+#include "core/cc/latch.h"
+#include "core/cc/sequencer.h"
 
 namespace core::mr::detail {
 
