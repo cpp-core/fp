@@ -1,4 +1,4 @@
-// Copyright (C) 2017, 2019, 2021 by Mark Melton
+// Copyright (C) 2017, 2019, 2021, 2022 by Mark Melton
 //
 
 #pragma once
@@ -70,10 +70,10 @@ public:
     
 private:
     std::atomic<bool> done_{false};
-    core::mt::Latch ready_latch_;
-    core::mt::Barrier finish_barrier_;
-    core::mt::Gate work_gate_;
-    core::mt::Sequencer sequencer_;
+    core::cc::Latch ready_latch_;
+    core::cc::Barrier finish_barrier_;
+    core::cc::Gate work_gate_;
+    core::cc::Sequencer sequencer_;
     Functor functor_;
     vector<std::thread> threads_;
 };
