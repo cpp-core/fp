@@ -3,6 +3,7 @@
 
 #pragma once
 #include <thread>
+#include <vector>
 #include "core/cc/barrier.h"
 #include "core/cc/gate.h"
 #include "core/cc/latch.h"
@@ -75,7 +76,7 @@ private:
     core::cc::Gate work_gate_;
     core::cc::Sequencer sequencer_;
     Functor functor_;
-    vector<std::thread> threads_;
+    std::vector<std::thread> threads_;
 };
 
 }; // core::mr::detail

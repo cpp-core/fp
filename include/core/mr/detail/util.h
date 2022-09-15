@@ -2,7 +2,6 @@
 //
 
 #pragma once
-#include "core/util/common.h"
 #include "core/mp/same.h"
 
 namespace core::mr::detail {
