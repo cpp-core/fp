@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "core/mr/mr.h"
 #include "coro/stream/stream.h"
-#include "core/type/fixed.h"
+#include "core/util/fixed.h"
 
 using namespace core::mr;
 
