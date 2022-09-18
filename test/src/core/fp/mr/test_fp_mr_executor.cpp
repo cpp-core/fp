@@ -2,8 +2,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "core/mr/mr.h"
-#include "core/mr/executor.h"
+#include "core/fp/mr/mr.h"
+#include "core/fp/mr/executor.h"
 #include "core/util/fixed.h"
 #include "coro/stream/stream.h"
 

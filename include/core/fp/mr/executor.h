@@ -3,8 +3,8 @@
 
 #pragma once
 #include <thread>
-#include "core/mr/detail/executor_base.h"
-#include "core/mr/detail/sink.h"
+#include "core/fp/mr/detail/executor_base.h"
+#include "core/fp/mr/detail/sink.h"
 #include "core/mp/same.h"
 
 namespace core::mr {

@@ -2,7 +2,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "core/mr/mr.h"
+#include "core/fp/mr/mr.h"
 #include "coro/stream/stream.h"
 
 using namespace core::mr::detail;
