@@ -1,7 +1,8 @@
-// Copyright (C) 2021 by Mark Melton
+// Copyright (C) 2021, 2022 by Mark Melton
 //
 
 #pragma once
+#include <optional>
 #include "core/mr/detail/util.h"
 
 namespace core::mr {
