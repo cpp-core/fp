@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.22 FATAL_ERROR)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 
+find_package(stream)
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
