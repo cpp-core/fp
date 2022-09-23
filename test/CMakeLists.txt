@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.22 FATAL_ERROR)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 
-find_package(googletest REQUIRED)
+find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
 set(TESTS
@@ -15,21 +15,20 @@ set(TESTS
   )
 
 set(LIBRARIES
-  cxx_core_util::cxx_core_util
-  googletest::cxx-googletest
+  GTest::gtest
   Threads::Threads)
 
-# If the cxx_core_cc library is available, build the parallel
+# If the cc library is available, build the parallel
 # map-reduce tests. Otherwise, skip the parallel tests.
 #
-find_package(cxx_core_cc QUIET)
+find_package(cc QUIET)
 
-if(${cxx_core_cc_FOUND} EQUAL 1)
-  message("-- cxx-core-fp: cxx_core_cc is available, building parallel map-reduce tests")
+if(${cc_FOUND} EQUAL 1)
+  message("-- fp: cc is available, building parallel map-reduce tests")
   list(APPEND TESTS fp/mr/executor)
-  list(APPEND LIBRARIES cxx_core_cc::cxx_core_cc)
+  list(APPEND LIBRARIES cc::cc)
 else()
-  message("-- cxx-core-fp: cxx_core_cc is not available, skipping parallel map-reduce tests")
+  message("-- fp: cc is not available, skipping parallel map-reduce tests")
 endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/configure_tests.cmake)

@@ -4,7 +4,16 @@
 #include <gtest/gtest.h>
 #include "core/fp/mr/mr.h"
 #include "coro/stream/stream.h"
-#include "core/util/fixed.h"
+
+template<class T>
+class Fixed : public T {
+    using T::T;
+    Fixed(const Fixed&) = delete;
+    Fixed(Fixed&&) = delete;
+
+    Fixed& operator=(const Fixed&) = delete;
+    Fixed& operator=(Fixed&&) = delete;
+};
 
 using namespace core::mr;
 
@@ -28,7 +37,7 @@ Environment *env{nullptr};
 
 TEST(MapReduce, Dot)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
     
     auto r = source(data)
@@ -40,7 +49,7 @@ TEST(MapReduce, Dot)
 
 TEST(MapReduce, Pipe)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = data
@@ -52,7 +61,7 @@ TEST(MapReduce, Pipe)
 
 TEST(MapReduce, DotEval)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = source(data).eval();
@@ -64,7 +73,7 @@ TEST(MapReduce, DotEval)
 
 TEST(MapReduce, PipeEval)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = data | eval();
@@ -76,7 +85,7 @@ TEST(MapReduce, PipeEval)
 
 TEST(MapReduce, DotFilter)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = source(data).filter([](int n) { return true; }).eval();
@@ -88,7 +97,7 @@ TEST(MapReduce, DotFilter)
 
 TEST(MapReduce, PipeFilter)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = data | filter([](int n) { return true; }) | eval();
@@ -100,7 +109,7 @@ TEST(MapReduce, PipeFilter)
 
 TEST(MapReduce, DotTransform)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = source(data).transform([](int n) { return n; }).eval();
@@ -112,7 +121,7 @@ TEST(MapReduce, DotTransform)
 
 TEST(MapReduce, PipeTransform)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = data | transform([](int n) { return n; }) | eval();
@@ -124,7 +133,7 @@ TEST(MapReduce, PipeTransform)
 
 TEST(MapReduce, DotReduce)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = source(data).reduce(0, [](int& acc, int n) { acc += n; }).eval();
@@ -136,7 +145,7 @@ TEST(MapReduce, DotReduce)
 
 TEST(MapReduce, PipeReduce)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     auto r = data | reduce(0, [](int& acc, int n) { acc += n; }) | eval();
@@ -171,7 +180,7 @@ TEST(MapReduce, DotReduceMixed)
 
 TEST(MapReduce, PipeReduceMixed)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     std::pair<int,int> extrema{std::numeric_limits<int>::max(), std::numeric_limits<int>::min()};
@@ -196,7 +205,7 @@ TEST(MapReduce, PipeReduceMixed)
 
 TEST(MapReduce, DotApply)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     int sum{0};
@@ -215,7 +224,7 @@ TEST(MapReduce, DotApply)
 
 TEST(MapReduce, PipeApply)
 {
-    core::Fixed<std::vector<int>> data;
+    Fixed<std::vector<int>> data;
     env->iota(data, 10);
 
     int sum{0};
