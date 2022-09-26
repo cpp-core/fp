@@ -3,7 +3,7 @@ project (fp VERSION 0.1 LANGUAGES C CXX)
 
 # Make including this file idempotent
 #
-if(TARGET fp)
+if(TARGET fp OR TARGET fp::fp)
   return()
 endif()
 
@@ -36,7 +36,8 @@ option(FP_DOCS "Generate the docs." OFF)
 # Add our dependencies
 #
 include(GNUInstallDirs)
-find_package(mp)
+include(cmake/cpp_core_find_package.cmake)
+cpp_core_find_package(mp)
 
 # Output configuration
 #
@@ -58,19 +59,19 @@ add_compile_options(-O)
 add_link_options(-stdlib=libc++)
 
 add_library(fp INTERFACE)
-target_include_directories(fp
-  INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+add_library(fp::fp ALIAS fp)
+
+# Define the header files for this library.
+#
+file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
+target_sources(fp INTERFACE FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
+
+target_link_libraries(fp INTERFACE mp::mp)
 
 # Optionally configure the tests
 #
 if(FP_TEST)
   enable_testing()
-  if (NOT TARGET check)
-    add_custom_target(check ${CMAKE_CTEST_COMMAND})
-    add_custom_target(check_detail ${CMAKE_CTEST_COMMAND} -V)
-  endif()
   add_subdirectory(test)
 endif()
 
@@ -84,4 +85,3 @@ endif()
 #
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/install_config.cmake)
 install_config(fp)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/core/fp DESTINATION include/core/)

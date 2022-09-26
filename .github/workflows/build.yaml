@@ -2,9 +2,12 @@
 name: Build and Unit Test
 
 on:
-  # push:
-  #   branches:
-  #     - 'main'
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
   
   workflow_dispatch:
 
@@ -22,22 +25,6 @@ jobs:
         repository: cpp-core/fp
         path: fp
         
-    - name: Checkout depends
-      uses: actions/checkout@v2
-      with:
-        repository: cpp-core/depends
-        ref: main
-        path: depends
-        
-    - name: Build dependencies
-      run: |
-        export CC=clang-11
-        export CXX=clang++-11
-        mkdir depends/build && pushd depends/build
-        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/opt -DALL_TEST=ON ..
-        make fp-depends
-        popd
-
     - name: Build and run the tests
       run: |
         export CC=clang-11

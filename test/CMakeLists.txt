@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 3.22 FATAL_ERROR)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 
-find_package(stream)
-find_package(GTest REQUIRED)
+cpp_core_find_package(stream)
+cpp_core_find_package(googletest VERSION v1.12.0 EXCLUDE_FROM_ALL)
 find_package(Threads REQUIRED)
 
 set(TESTS
@@ -16,6 +16,8 @@ set(TESTS
   )
 
 set(LIBRARIES
+  fp
+  stream::stream
   GTest::gtest
   Threads::Threads)
 
