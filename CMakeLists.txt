@@ -33,12 +33,6 @@ endif()
 option(FP_TEST "Generate the tests." OFF)
 option(FP_DOCS "Generate the docs." OFF)
 
-# Add our dependencies
-#
-include(GNUInstallDirs)
-include(cmake/cpp_core_find_package.cmake)
-cpp_core_find_package(mp)
-
 # Output configuration
 #
 message("-- fp: Configuration: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -47,7 +41,7 @@ message("-- fp: FP_TEST ${FP_TEST}")
 message("-- fp: FP_DOCS ${FP_DOCS}")
 message("-- fp: CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 
-# Compilation
+# Setup compilation before adding dependencies
 #
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -58,6 +52,14 @@ add_compile_options(-stdlib=libc++)
 add_compile_options(-O)
 add_link_options(-stdlib=libc++)
 
+# Add our dependencies
+#
+include(GNUInstallDirs)
+include(cmake/cpp_core_find_package.cmake)
+cpp_core_find_package(mp)
+
+# Build the library
+#
 add_library(fp INTERFACE)
 add_library(fp::fp ALIAS fp)
 
