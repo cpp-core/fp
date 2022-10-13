@@ -10,16 +10,9 @@ endif()
 # If this is the current project.
 #
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  # Setup the CPP_CORE directories
+  # Laod the cmake recipes and utilities.
   #
-  set(CPP_CORE_DIR "${CMAKE_CURRENT_LIST_DIR}/.." CACHE STRING "Root directory for components")
-  set(CPP_CORE_SOURCE_COMPONENT_DIR ${CPP_CORE_DIR})
-  set(CPP_CORE_BINARY_COMPONENT_DIR ${CMAKE_BINARY_DIR})
-  
-  # Include the cmake helpers
-  #
-  include(${CPP_CORE_SOURCE_COMPONENT_DIR}/cmake/utils/all.cmake)
-  include(${CPP_CORE_SOURCE_COMPONENT_DIR}/cmake/recipes/all.cmake)
+  include(${CMAKE_CURRENT_LIST_DIR}/cmake/load_cmake_helpers.cmake)
 
   # Options for generating tests and documentation
   #
