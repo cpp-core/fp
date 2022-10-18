@@ -9,6 +9,7 @@
 #include "core/fp/mr/detail/interface.h"
 #include "core/fp/mr/detail/materialize.h"
 #include "core/fp/mr/detail/reduce.h"
+#include "core/fp/mr/detail/scan.h"
 #include "core/fp/mr/detail/source.h"
 #include "core/fp/mr/detail/transform.h"
 

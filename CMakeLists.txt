@@ -71,8 +71,10 @@ target_sources(fp INTERFACE FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_IN
 
 target_link_libraries(fp INTERFACE mp::mp)
 
-add_executable(fp0 src/tools/fp0.cpp)
-target_link_libraries(fp0 fp::fp)
+foreach(prog fp0 fp1)
+  add_executable(${prog} src/tools/${prog}.cpp)
+  target_link_libraries(${prog} fp::fp)
+endforeach()
 
 # Optionally configure the tests
 #

@@ -29,6 +29,9 @@ struct Parallelize;
 template<Expression,class,class,class>
 struct Reduce;
 
+template<Expression, class, class>
+struct Scan;
+
 template<class>
 struct Source;
 
@@ -58,6 +61,11 @@ struct Interface {
 
     auto eval(Executor& ex, std::optional<size_t> max_chunk = std::nullopt) {
 	return Parallelize{std::move(ref()), ex, max_chunk}();
+    }
+
+    template<class A, class R>
+    auto scan(A&& acc, R&& reducer) {
+	return Scan{std::move(ref()), std::forward<A>(acc), std::forward<R>(reducer)};
     }
 
     template<class A, class R, class C>
