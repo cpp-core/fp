@@ -17,6 +17,7 @@ int main(int argc, const char *argv[]) {
 	.filter([](int n) { return n % 2 < 2; })
 	.transform([](int n) { return n; })
 	.scan(0, [](int acc, int n) { return acc + n; })
+	.collect<std::list>()
 	;
     for (auto n : data)
 	std::cout << n << " ";

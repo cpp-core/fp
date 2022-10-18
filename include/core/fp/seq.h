@@ -3,6 +3,7 @@
 
 #pragma once
 #include "core/fp/detail/seq/chaining.h"
+#include "core/fp/detail/seq/collect.h"
 #include "core/fp/detail/seq/filter.h"
 #include "core/fp/detail/seq/scan.h"
 #include "core/fp/detail/seq/source.h"

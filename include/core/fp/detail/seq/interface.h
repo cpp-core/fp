@@ -6,6 +6,9 @@
 
 namespace core::fp::detail {
 
+template<Sequence S>
+struct Collect;
+
 template<Sequence S, SequencePredicate P>
 struct Filter;
 
@@ -23,6 +26,12 @@ struct Zip;
 
 template<class T>
 struct Interface {
+    template<template <class...> class C>
+    auto collect() {
+	auto c = Collect{std::move(ref())};
+	return c.template run<C>();
+    }
+    
     template<SequencePredicate P>
     auto filter(P&& predicate) {
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
