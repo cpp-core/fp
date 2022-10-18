@@ -18,6 +18,9 @@ template<Expression, class>
 struct Filter;
 
 template<Expression>
+struct Flatten;
+
+template<Expression>
 struct Materialize;
 
 template<Expression>
@@ -43,6 +46,10 @@ struct Interface {
     template<class P>
     auto filter(P&& predicate) {
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
+    }
+
+    auto flatten() {
+	return Flatten{std::move(ref())};
     }
 
     auto eval() {

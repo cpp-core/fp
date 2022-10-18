@@ -50,6 +50,13 @@ concept ContiguousContainer = requires (C c) {
     c.end();
 };
 
+template<class C>
+concept Container = requires (C c) {
+    typename std::decay_t<C>::value_type;
+    c.begin();
+    c.end();
+};
+
 template<class P, class T>
 concept Predicate = requires (P p, T t) {
     requires std::is_invocable_v<std::decay_t<P>, std::decay_t<T>>;

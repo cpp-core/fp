@@ -5,6 +5,7 @@
 #include "core/fp/mr/detail/apply.h"
 #include "core/fp/mr/detail/chaining.h"
 #include "core/fp/mr/detail/filter.h"
+#include "core/fp/mr/detail/flatten.h"
 #include "core/fp/mr/detail/interface.h"
 #include "core/fp/mr/detail/materialize.h"
 #include "core/fp/mr/detail/reduce.h"
