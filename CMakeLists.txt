@@ -57,7 +57,7 @@ add_link_options(-stdlib=libc++)
 
 # Add our dependencies
 #
-add_mp()
+add_tuple()
 
 # Build the library
 #
@@ -69,7 +69,7 @@ add_library(fp::fp ALIAS fp)
 file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
 target_sources(fp INTERFACE FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
 
-target_link_libraries(fp INTERFACE mp::mp)
+target_link_libraries(fp INTERFACE tuple::tuple)
 
 foreach(prog fp0 fp1)
   add_executable(${prog} src/tools/${prog}.cpp)
