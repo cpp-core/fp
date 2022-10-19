@@ -20,6 +20,9 @@ template<Sequence S, SequencePredicate P>
 struct Filter;
 
 template<Sequence S, class A, class R>
+struct Fold;
+
+template<Sequence S, class A, class R>
 struct Scan;
 
 template<Sequence S>
@@ -50,6 +53,12 @@ struct Interface {
     template<SequencePredicate P>
     auto filter(P&& predicate) {
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
+    }
+
+    template<class A, class R>
+    auto fold(A&& acc, R&& reducer) {
+	auto f = Fold{std::move(ref()), std::forward<A>(acc), std::forward<R>(reducer)};
+	return f.run();
     }
 
     template<class A, class R>

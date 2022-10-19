@@ -7,6 +7,7 @@
 #include "core/fp/detail/seq/collect.h"
 #include "core/fp/detail/seq/concat.h"
 #include "core/fp/detail/seq/filter.h"
+#include "core/fp/detail/seq/fold.h"
 #include "core/fp/detail/seq/scan.h"
 #include "core/fp/detail/seq/source.h"
 #include "core/fp/detail/seq/take.h"

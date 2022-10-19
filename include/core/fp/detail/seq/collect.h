@@ -11,7 +11,7 @@ struct Collect : Interface<Collect<S>> {
     using value_type = sequence_value_t<S>;
 
     Collect(S&& seq)
-	: seq_(seq) {
+	: seq_(std::forward<S>(seq)) {
     }
 
     template<template<class...> class C>

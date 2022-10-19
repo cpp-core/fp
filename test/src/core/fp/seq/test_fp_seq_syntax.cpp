@@ -79,6 +79,18 @@ TEST(FpSeq, DotFilter)
     EXPECT_EQ(r2, data);
 }
 
+TEST(FpSeq, DotFold)
+{
+    Fixed<std::vector<int>> data;
+    env->iota(data, 10);
+
+    auto r = source(data).fold(0, [](int s, int n) { return s + n; });
+    EXPECT_EQ(r, 45);
+
+    auto r2 = source(data).fold(0, [](int s, int n) { return s + n; });
+    EXPECT_EQ(r2, 45);
+}
+
 TEST(FpSeq, DotScan)
 {
     Fixed<std::vector<int>> data;
