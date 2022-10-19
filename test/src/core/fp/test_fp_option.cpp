@@ -9,7 +9,7 @@
 using namespace core::fp;
 using namespace std::literals::string_literals;
 
-TEST(Option, Construct)
+TEST(FpOption, Construct)
 {
     Some s{42};
     ASSERT_TRUE(s);
@@ -19,7 +19,7 @@ TEST(Option, Construct)
     EXPECT_FALSE(n);
 }
 
-TEST(Option, HasValue)
+TEST(FpOption, HasValue)
 {
     Some s{42};
     ASSERT_TRUE(s);
@@ -30,7 +30,7 @@ TEST(Option, HasValue)
     EXPECT_FALSE(n.has_value());
 }
 
-TEST(Option, Contains)
+TEST(FpOption, Contains)
 {
     Some s{42};
     EXPECT_TRUE(s.contains(42));
@@ -40,7 +40,7 @@ TEST(Option, Contains)
     EXPECT_FALSE(n.contains(42));
 }
 
-TEST(Option, Exists)
+TEST(FpOption, Exists)
 {
     Some s{42};
     EXPECT_TRUE(s.exists([](int elem) { return elem == 42; }));
@@ -50,7 +50,7 @@ TEST(Option, Exists)
     EXPECT_FALSE(n.exists([](int elem) { return elem == 42; }));
 }
 
-TEST(Option, Filter)
+TEST(FpOption, Filter)
 {
     Some s{42};
     auto r0 = s.filter([](int elem) { return elem == 42; });
@@ -65,7 +65,7 @@ TEST(Option, Filter)
     EXPECT_FALSE(s2);
 }
 
-TEST(Option, FlatMap)
+TEST(FpOption, FlatMap)
 {
     Some s{21};
     auto r0 = s.flat_map([](int elem) { return Option{Some{2 * elem}}; });
@@ -80,7 +80,7 @@ TEST(Option, FlatMap)
     EXPECT_FALSE(s2);
 }
 
-TEST(Option, Fold)
+TEST(FpOption, Fold)
 {
     Some s{21};
     auto r0 = s.fold([](){ return 21; }, [](int elem){ return 2 * elem; });
@@ -91,7 +91,7 @@ TEST(Option, Fold)
     EXPECT_EQ(r1, 21);
 }
 
-TEST(Option, ForAll)
+TEST(FpOption, ForAll)
 {
     Some s{42};
     EXPECT_TRUE(s.forall([](int elem) { return elem == 42; }));
@@ -101,7 +101,7 @@ TEST(Option, ForAll)
     EXPECT_TRUE(n.forall([](int elem) { return false; }));
 }
 
-TEST(Option, ForEach)
+TEST(FpOption, ForEach)
 {
     Some s{21};
     s.foreach([](int& elem) { elem *= 2; });
@@ -113,7 +113,7 @@ TEST(Option, ForEach)
     EXPECT_FALSE(n);
 }
 
-TEST(Option, GetOrElse)
+TEST(FpOption, GetOrElse)
 {
     Some s{42};
     EXPECT_EQ(s.get_or_else(21), 42);
@@ -122,7 +122,7 @@ TEST(Option, GetOrElse)
     EXPECT_EQ(n.get_or_else(42), 42);
 }
 
-TEST(Option, Map)
+TEST(FpOption, Map)
 {
     Some s{21};
     auto r0 = s.map([](int elem) { return 2 * elem; });
@@ -134,7 +134,7 @@ TEST(Option, Map)
     EXPECT_FALSE(r1);
 }
 
-TEST(Option, Match)
+TEST(FpOption, Match)
 {
     Some s{42};
     auto r0 = match(s,
@@ -149,7 +149,7 @@ TEST(Option, Match)
     EXPECT_EQ(r1, 0);
 }
 
-TEST(Option, OrElse)
+TEST(FpOption, OrElse)
 {
     Some s{21};
     auto r0 = s.or_else([]() { return Option{Some{42}}; });
@@ -162,7 +162,7 @@ TEST(Option, OrElse)
     EXPECT_EQ(r1.get(), 42);
 }
 
-TEST(Option, ToLeft)
+TEST(FpOption, ToLeft)
 {
     Some s{"error"s};
     auto l = s.to_left(42);
@@ -175,7 +175,7 @@ TEST(Option, ToLeft)
     EXPECT_EQ(l1.get_right(), 42);
 }
 
-TEST(Option, ToRight)
+TEST(FpOption, ToRight)
 {
     Some s{"error"s};
     auto r = s.to_right(42);

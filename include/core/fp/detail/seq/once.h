@@ -14,6 +14,9 @@ struct Once : Interface<Once<T>> {
 	: value_(value) {
     }
 
+    Once(const Once&) = delete;
+    Once(Once&&) = default;
+
     std::optional<value_type> next() {
 	if (exhausted_)
 	    return std::nullopt;

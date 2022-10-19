@@ -7,7 +7,7 @@
 using namespace core::fp;
 using namespace std::literals::string_literals;
 
-TEST(Fp, FoldLeftEmpty)
+TEST(FpFold, LeftEmpty)
 {
     std::vector<std::string> strs = { };
     EXPECT_THROW(fold_l(strs, [](auto a, auto b) { return a + ":" + b; }),
@@ -15,21 +15,21 @@ TEST(Fp, FoldLeftEmpty)
 }
 
 
-TEST(Fp, FoldLeftSingle)
+TEST(FpFold, LeftSingle)
 {
     std::vector<std::string> strs = { "abc" }; 
     auto r = fold_l(strs, [](auto a, auto b) { return a + ":"s + b; });
     EXPECT_EQ(r, "abc");
 }
 
-TEST(Fp, FoldLeftMultipleStrings)
+TEST(FpFold, LeftMultipleStrings)
 {
     std::vector<std::string> strs = { "abc", "def", "ghi" };
     auto r = fold_l(strs, [](auto a, auto b) { return a + ":"s + b; });
     EXPECT_EQ(r, "abc:def:ghi");
 }
 
-TEST(Fp, FoldLeftMultipleInts)
+TEST(FpFold, LeftMultipleInts)
 {
     std::vector<int> values = { 1, 2, 3 };
     {
@@ -42,7 +42,7 @@ TEST(Fp, FoldLeftMultipleInts)
     }
 }
 
-TEST(Fp, FoldAny)
+TEST(FpFold, Any)
 {
     auto r0 = any(std::vector<bool>{}, [](const auto& elem) { return elem; });
     EXPECT_EQ(false, r0);
@@ -63,7 +63,7 @@ TEST(Fp, FoldAny)
     EXPECT_EQ(false, r5);
 }
 
-TEST(Fp, FoldAll)
+TEST(FpFold, All)
 {
     auto r0 = all(std::vector<bool>{}, [](const auto& elem) { return elem; });
     EXPECT_EQ(true, r0);

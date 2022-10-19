@@ -17,6 +17,9 @@ struct Zip : Interface<Zip<Ss...>> {
 	: source_(std::forward<source_type>(tuple)) {
     }
 
+    Zip(const Zip&) = delete;
+    Zip(Zip&&) = default;
+
     std::optional<value_type> next() {
 	using core::tp::map_inplace, core::tp::map, core::tp::all;
 	auto values = map_inplace([](auto& s) { return s.next(); }, source_.ref());

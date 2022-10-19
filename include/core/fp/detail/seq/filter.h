@@ -15,6 +15,9 @@ struct Filter : Interface<Filter<S,P>> {
 	, predicate_(std::forward<P>(predicate)) {
     }
 
+    Filter(const Filter&) = delete;
+    Filter(Filter&&) = default;
+    
     std::optional<value_type> next() {
 	while (auto p = seq_.next())
 	    if (predicate_(*p))

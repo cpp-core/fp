@@ -15,6 +15,9 @@ struct Repeat : Interface<Repeat<T>> {
 	, count_(count) {
     }
 
+    Repeat(const Repeat&) = delete;
+    Repeat(Repeat&&) = default;
+    
     std::optional<value_type> next() {
 	if (count_ == 0)
 	    return std::nullopt;

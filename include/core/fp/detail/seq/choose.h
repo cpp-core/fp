@@ -20,6 +20,9 @@ struct Choose : Interface<Choose<S, Ss...>> {
 	, dist_(0, N - 1) {
     }
 
+    Choose(const Choose&) = delete;
+    Choose(Choose&&) = default;
+
     std::optional<value_type> next() {
 	using core::tp::map_nth;
 	while (exhausted_.size() < N) {

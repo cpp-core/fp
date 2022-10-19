@@ -14,6 +14,9 @@ struct Collect : Interface<Collect<S>> {
 	: seq_(std::forward<S>(seq)) {
     }
 
+    Collect(const Collect&) = delete;
+    Collect(Collect&&) = default;
+    
     template<template<class...> class C>
     auto run() {
 	C<value_type> data;

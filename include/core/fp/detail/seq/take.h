@@ -15,6 +15,9 @@ struct Take : Interface<Take<S>> {
 	, count_(count) {
     }
 
+    Take(const Take&) = delete;
+    Take(Take&&) = default;
+    
     std::optional<value_type> next() {
 	if (count_ > 0) {
 	    --count_;

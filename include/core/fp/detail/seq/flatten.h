@@ -20,13 +20,14 @@ struct Flatten : Interface<Flatten<S>> {
 
     Flatten(S&& source)
 	: source_(std::forward<S>(source))
-	, index_(0) {
+	, index_(0)
+	, tuple_(source_.next()) {
     }
 
+    Flatten(const Flatten&) = delete;
+    Flatten(Flatten&&) = default;
+
     std::optional<value_type> next() {
-	if (not tuple_)
-	    tuple_ = source_.next();
-	    
 	if (tuple_) {
 	    auto value = core::tp::map_nth([](auto& s) { return s; }, index_, *tuple_);
 	    ++index_;

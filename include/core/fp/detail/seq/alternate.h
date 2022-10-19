@@ -18,6 +18,9 @@ struct Alternate : Interface<Alternate<S, Ss...>> {
 	, index_(0) {
     }
 
+    Alternate(const Alternate&) = delete;
+    Alternate(Alternate&&) = default;
+
     std::optional<value_type> next() {
 	using core::tp::map_nth;
 	for (auto i = 0; i < N; ++i) 

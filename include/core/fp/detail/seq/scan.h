@@ -16,6 +16,9 @@ struct Scan : Interface<Scan<S, A, R>> {
 	, reducer_(std::forward<R>(reducer)) {
     }
 
+    Scan(const Scan&) = delete;
+    Scan(Scan&&) = default;
+    
     std::optional<value_type> next() {
 	if (auto p = seq_.next()) {
 	    acc_ = reducer_(acc_, *p);

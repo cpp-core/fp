@@ -15,10 +15,8 @@ struct Source : Interface<Source<C>> {
 	, iter_(data_.begin()) {
     }
 
-    Source(const Source& other)
-	: data_(other.data_)
-	, iter_(data_.begin()) {
-    }
+    Source(const Source& other) = delete;
+    Source(Source&& other) = default;
 
     std::optional<value_type> next() {
 	if (iter_ != data_.end())

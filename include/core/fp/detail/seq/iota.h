@@ -16,6 +16,9 @@ struct Iota : Interface<Iota<T>> {
 	, step_(step) {
     }
 
+    Iota(const Iota&) = delete;
+    Iota(Iota&&) = default;
+
     std::optional<value_type> next() {
 	if (count_ > 0) {
 	    auto r = value_;

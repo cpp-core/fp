@@ -16,6 +16,9 @@ struct Fold : Interface<Fold<S, A, R>> {
 	, reducer_(std::forward<R>(reducer)) {
     }
 
+    Fold(const Fold&) = delete;
+    Fold(Fold&&) = default;
+
     const auto& run() {
 	for (const auto& value : seq_)
 	    acc_ = reducer_(acc_, value);

@@ -11,7 +11,7 @@ using ::testing::StaticAssertTypeEq;
 
 using MyEither = Either<std::string,int>;
 
-TEST(Either, ConstructLeftRight)
+TEST(FpEither, ConstructLeftRight)
 {
     auto r = Right{42};
     ASSERT_TRUE(r.is_right());
@@ -22,7 +22,7 @@ TEST(Either, ConstructLeftRight)
     EXPECT_EQ(l.get_left(), "error"s);
 }
 
-TEST(Either, ConstructFromLeftRight)
+TEST(FpEither, ConstructFromLeftRight)
 {
     MyEither r{42};
     ASSERT_TRUE(r.is_right());
@@ -37,14 +37,14 @@ TEST(Either, ConstructFromLeftRight)
     EXPECT_EQ(l.get_left(), "error"s);
 }
 
-TEST(Either, Contains)
+TEST(FpEither, Contains)
 {
     MyEither r{42}, l{Left{"error"s}};
     EXPECT_TRUE(r.contains(42));
     EXPECT_FALSE(l.contains(42));
 }
 
-TEST(Either, Exists)
+TEST(FpEither, Exists)
 {
     MyEither r{42}, l{Left{"error"s}};
     EXPECT_TRUE(r.exists([](int elem) { return elem == 42; }));
@@ -52,7 +52,7 @@ TEST(Either, Exists)
     EXPECT_FALSE(l.exists([](int elem) { return true; }));
 }
 
-TEST(Either, FilterOrElse)
+TEST(FpEither, FilterOrElse)
 {
     MyEither r{42}, l{Left{"error"s}};
     auto s = r.filter_or_else([](int elem) { return elem == 42; }, "bad"s);
@@ -72,7 +72,7 @@ TEST(Either, FilterOrElse)
     EXPECT_EQ(s3.get_left(), "bad"s);
 }
 
-TEST(Either, FlatMap)
+TEST(FpEither, FlatMap)
 {
     MyEither r{21}, l{Left{"error"s}};
     auto s = r.flat_map([](int elem) { return Right{2 * elem}; });
@@ -84,7 +84,7 @@ TEST(Either, FlatMap)
     EXPECT_EQ(s2.get_left(), "error"s);
 }
 
-TEST(Either, Fold)
+TEST(FpEither, Fold)
 {
     MyEither r{21}, l{Left{"error"s}};
     auto s = r.fold([](const std::string& s) { return s + "!"s; },
@@ -98,7 +98,7 @@ TEST(Either, Fold)
     EXPECT_EQ(s1.get_left(), "error!"s);
 }
 
-TEST(Either, ForAll)
+TEST(FpEither, ForAll)
 {
     MyEither r{42}, l{Left{"error"s}};
     auto s = r.forall([](int elem) { return elem == 42; });
@@ -114,7 +114,7 @@ TEST(Either, ForAll)
     EXPECT_TRUE(s3);
 }
 
-TEST(Either, ForEach)
+TEST(FpEither, ForEach)
 {
     MyEither r{21}, l{Left{"error"s}};
     r.foreach([](int& elem) { elem *= 2; });
@@ -126,7 +126,7 @@ TEST(Either, ForEach)
     EXPECT_EQ(l.get_left(), "error"s);
 }
 
-TEST(Either, GetLeft)
+TEST(FpEither, GetLeft)
 {
     Left l{"error"s};
     StaticAssertTypeEq<decltype(l.get_left()), std::string&>();
@@ -137,7 +137,7 @@ TEST(Either, GetLeft)
     EXPECT_EQ(Left{"error"s}.get_left(), "error");
 }
 
-TEST(Either, GetRight)
+TEST(FpEither, GetRight)
 {
     Right r{42};
     StaticAssertTypeEq<decltype(r.get_right()), int&>();
@@ -148,7 +148,7 @@ TEST(Either, GetRight)
     EXPECT_EQ(Right{42}.get_right(), 42);
 }
 
-TEST(Either, Map)
+TEST(FpEither, Map)
 {
     MyEither v{21}, e{Left{"error"s}};
     {
@@ -180,7 +180,7 @@ TEST(Either, Map)
     }
 }
 
-TEST(Either, OrElse)
+TEST(FpEither, OrElse)
 {
     MyEither v{21}, e{Left{"error"s}};
     {
@@ -216,7 +216,7 @@ TEST(Either, OrElse)
     }
 }
 
-TEST(Either, ToMaybe)
+TEST(FpEither, ToMaybe)
 {
     Right r{42};
     auto r0 = r.to_option();

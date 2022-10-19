@@ -16,6 +16,9 @@ struct Transform : Interface<Transform<S,F>> {
 	, function_(std::forward<F>(function)) {
     }
 
+    Transform(const Transform&) = delete;
+    Transform(Transform&&) = default;
+
     std::optional<value_type> next() {
 	if (auto p = seq_.next())
 	    return function_(*p);

@@ -17,6 +17,9 @@ struct Unique : Interface<Unique<S, F>> {
 	, function_(std::forward<F>(function)) {
     }
 
+    Unique(const Unique&) = delete;
+    Unique(Unique&&) = default;
+
     std::optional<value_type> next() {
 	while (auto p = seq_.next()) {
 	    auto key = function_(*p);

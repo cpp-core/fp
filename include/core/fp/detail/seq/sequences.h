@@ -9,7 +9,7 @@ namespace core::fp::detail {
 template<Sequence... Ss>
 struct Sequences : Interface<Sequences<Ss...>> {
     Sequences(Ss&&... seqs)
-	: sources_(std::make_tuple(seqs...)) {
+	: sources_(std::make_tuple(std::forward<Ss>(seqs)...)) {
     }
     
     Sequences(std::tuple<Ss...>&& sources)

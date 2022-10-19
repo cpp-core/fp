@@ -10,14 +10,14 @@
 using namespace core::fp;
 using namespace std::literals::string_literals;
 
-TEST(Try, ConstructSuccess)
+TEST(FpTry, ConstructSuccess)
 {
     Success s{42};
     ASSERT_TRUE(s);
     EXPECT_EQ(s.get(), 42);
 }
 
-TEST(Try, ConstructFailure)
+TEST(FpTry, ConstructFailure)
 {
     Failure f{};
     EXPECT_FALSE(f);
@@ -30,7 +30,7 @@ TEST(Try, ConstructFailure)
     EXPECT_EQ(f1.get_failure().what(), "std::exception"s);
 }
 
-TEST(Try, Construct)
+TEST(FpTry, Construct)
 {
     Try<int> s = Success{42};
     ASSERT_TRUE(s);
@@ -40,7 +40,7 @@ TEST(Try, Construct)
     EXPECT_FALSE(f);
 }
 
-TEST(Try, IsSuccessFailure)
+TEST(FpTry, IsSuccessFailure)
 {
     Success s{42};
     ASSERT_TRUE(s);
@@ -53,7 +53,7 @@ TEST(Try, IsSuccessFailure)
     EXPECT_FALSE(f.is_success());
 }
 
-TEST(Try, Filter)
+TEST(FpTry, Filter)
 {
     Success s{42};
     auto t = s.filter([](int elem) { return elem == 42; });
@@ -71,7 +71,7 @@ TEST(Try, Filter)
     EXPECT_FALSE(t2);
 }
 
-TEST(Try, FlatMap)
+TEST(FpTry, FlatMap)
 {
     Success s{21};
     auto t = s.flat_map([](int elem) { return Success{2 * elem}; });
@@ -89,7 +89,7 @@ TEST(Try, FlatMap)
     EXPECT_FALSE(t2);
 }
 
-TEST(Try, Fold)
+TEST(FpTry, Fold)
 {
     Success s{21};
     Failure<int> f{};
@@ -102,7 +102,7 @@ TEST(Try, Fold)
     EXPECT_EQ(r1, 42);
 }
 
-TEST(Try, ForEach)
+TEST(FpTry, ForEach)
 {
     Success s{21};
     s.foreach([](int& elem) { elem *= 2; });
@@ -114,7 +114,7 @@ TEST(Try, ForEach)
     EXPECT_FALSE(f);
 }
 
-TEST(Tru, GetOrElse)
+TEST(FpTry, GetOrElse)
 {
     Success s{42};
     EXPECT_EQ(s.get_or_else(21), 42);
@@ -123,7 +123,7 @@ TEST(Tru, GetOrElse)
     EXPECT_EQ(f.get_or_else(42), 42);
 }
 
-TEST(Try, Map)
+TEST(FpTry, Map)
 {
     Success s{21};
     auto r0 = s.map([](int elem) { return 2 * elem; });
@@ -135,7 +135,7 @@ TEST(Try, Map)
     EXPECT_FALSE(r1);
 }
 
-TEST(Try, Match)
+TEST(FpTry, Match)
 {
     Success s{42};
     match(s,
@@ -156,7 +156,7 @@ TEST(Try, Match)
 	  });
 }
 
-TEST(Try, OrElse)
+TEST(FpTry, OrElse)
 {
     Success s{42};
     auto r0 = s.or_else(Success{21});
@@ -169,7 +169,7 @@ TEST(Try, OrElse)
     EXPECT_EQ(r1.get(), 42);
 }
 
-TEST(Try, ToEither)
+TEST(FpTry, ToEither)
 {
     Success s{42};
     auto r0 = s.to_either();
@@ -181,7 +181,7 @@ TEST(Try, ToEither)
     ASSERT_TRUE(r1.is_left());
 }
 
-TEST(Try, ToOption)
+TEST(FpTry, ToOption)
 {
     Success s{42};
     auto r0 = s.to_option();
@@ -193,7 +193,7 @@ TEST(Try, ToOption)
     ASSERT_FALSE(r1);
 }
 
-TEST(Try, Transform)
+TEST(FpTry, Transform)
 {
     Success s{21};
     auto r0 = s.transform([](const auto& f) { return Success{0}; },

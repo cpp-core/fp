@@ -18,6 +18,9 @@ struct Concat : Interface<Concat<S, Ss...>> {
 	, index_(0) {
     }
 
+    Concat(const Concat&) = delete;
+    Concat(Concat&&) = default;
+
     std::optional<value_type> next() {
 	using core::tp::map_nth;
 	for (; index_ < N; ++index_)
