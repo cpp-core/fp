@@ -2,12 +2,19 @@
 //
 
 #pragma once
+#include <vector>
 #include "core/fp/detail/seq/util.h"
 
 namespace core::fp::detail {
 
+template<Sequence S, Sequence... Ss>
+struct Alternate;
+
 template<Sequence S>
 struct Collect;
+
+template<Sequence S, Sequence... Ss>
+struct Concat;
 
 template<Sequence S, SequencePredicate P>
 struct Filter;
@@ -26,10 +33,18 @@ struct Zip;
 
 template<class T>
 struct Interface {
-    template<template <class...> class C>
+    auto alternate() {
+	return Alternate{std::move(ref())};
+    }
+    
+    template<template <class...> class C = std::vector>
     auto collect() {
 	auto c = Collect{std::move(ref())};
 	return c.template run<C>();
+    }
+    
+    auto concat() {
+	return Concat{std::move(ref())};
     }
     
     template<SequencePredicate P>

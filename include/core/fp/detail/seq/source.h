@@ -15,10 +15,15 @@ struct Source : Interface<Source<C>> {
 	, iter_(data_.begin()) {
     }
 
+    Source(const Source& other)
+	: data_(other.data_)
+	, iter_(data_.begin()) {
+    }
+
     std::optional<value_type> next() {
-	if (iter_ == data_.end())
-	    return std::nullopt;
-	return *iter_++;
+	if (iter_ != data_.end())
+	    return *iter_++;
+	return std::nullopt;
     }
 
 private:

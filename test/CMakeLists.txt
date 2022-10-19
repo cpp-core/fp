@@ -10,6 +10,8 @@ set(TESTS
   fp/try
   fp/mr/syntax
   fp/mr/util
+  fp/seq/syntax
+  fp/seq/util
   )
 
 set(LIBRARIES
