@@ -34,6 +34,9 @@ struct Take;
 template<Sequence S, class F>
 struct Transform;
 
+template<Sequence S, class F>
+struct Unique;
+
 template<Sequence... Ss>
 struct Zip;
 
@@ -80,6 +83,15 @@ struct Interface {
     template<class F>
     auto transform(F&& function) {
 	return Transform{std::move(ref()), std::forward<F>(function)};
+    }
+
+    template<class F>
+    auto unique(F&& function) {
+	return Unique{std::move(ref()), std::forward<F>(function)};
+    }
+
+    auto unique() {
+	return Unique{std::move(ref()), [](const auto& value) { return value; }};
     }
 
     auto zip() {

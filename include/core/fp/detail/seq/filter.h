@@ -11,8 +11,8 @@ struct Filter : Interface<Filter<S,P>> {
     using value_type = sequence_value_t<S>;
 
     Filter(S&& source, P&& predicate)
-	: seq_(source)
-	, predicate_(predicate) {
+	: seq_(std::forward<S>(source))
+	, predicate_(std::forward<P>(predicate)) {
     }
 
     std::optional<value_type> next() {

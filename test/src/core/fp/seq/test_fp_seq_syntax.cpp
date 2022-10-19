@@ -104,6 +104,38 @@ TEST(FpSeq, DotFold)
     EXPECT_EQ(r2, 45);
 }
 
+TEST(FpSeq, DotIota)
+{
+    std::vector<int> expected = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    auto r = iota(10).collect();
+    EXPECT_EQ(r, expected);
+    
+    {
+	std::vector<int> expected = { 11, 12, 13, 14 };
+	auto r = iota(4, 11).collect();
+	EXPECT_EQ(r, expected);
+    }
+    
+    {
+	std::vector<int> expected = { 1, 3, 5, 7, 9, 11, 13 };
+	auto r = iota(7, 1, 2).collect();
+	EXPECT_EQ(r, expected);
+    }
+}
+
+TEST(FpSeq, DotOnce)
+{
+    auto r = once(42).collect();
+    EXPECT_EQ(r, std::vector<int>{ 42 });
+}
+
+TEST(FpSeq, DotRepeat)
+{
+    std::vector<int> expected = { 42, 42, 42 };
+    auto r = repeat(42, 3).collect();
+    EXPECT_EQ(r, expected);
+}
+
 TEST(FpSeq, DotScan)
 {
     Fixed<std::vector<int>> data;
@@ -162,6 +194,19 @@ TEST(FpSeq, DotTransform)
 
     auto r2 = source(env->iota(10)).transform([](int n) { return n; }).collect();
     EXPECT_EQ(r2, data);
+}
+
+TEST(FpSeq, DotUnique)
+{
+    std::vector<int> expected = { 0, 2, 4, 6, 8, 3, 9 };
+    auto r = (iota(5, 0, 2) * iota(4, 0, 3)).concat().unique().collect();
+    EXPECT_EQ(r, expected);
+
+    {
+	std::vector<int> expected = { 4, 5, 6 };
+	auto r = iota(10, 4).unique([](int n) { return n % 3; }).collect();
+	EXPECT_EQ(r, expected);
+    }
 }
 
 TEST(FpSeq, DotZip)
