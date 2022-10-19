@@ -45,6 +45,19 @@ TEST(FpSeq, DotAlternate)
     EXPECT_EQ(r, expected);
 }
 
+TEST(FpSeq, DotChoose)
+{
+    std::vector<int> expected = { 0, 0, 1, 2, 2, 4, 6, 8 };
+    std::vector<int> not_expected = { 0, 0, 2, 1, 4, 2, 6, 8 };
+    auto s0 = source(env->iota(10)).filter([](int n) { return n % 2 == 0; });
+    auto s1 = source(env->iota(3));
+    auto r = (std::move(s0) * std::move(s1)).choose().collect();
+    EXPECT_NE(r, not_expected);
+    
+    std::sort(r.begin(), r.end());
+    EXPECT_EQ(r, expected);
+}
+
 TEST(FpSeq, DotCollect)
 {
     Fixed<std::vector<int>> data;

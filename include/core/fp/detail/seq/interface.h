@@ -10,6 +10,9 @@ namespace core::fp::detail {
 template<Sequence S, Sequence... Ss>
 struct Alternate;
 
+template<Sequence S, Sequence... Ss>
+struct Choose;
+
 template<Sequence S>
 struct Collect;
 
@@ -38,6 +41,10 @@ template<class T>
 struct Interface {
     auto alternate() {
 	return Alternate{std::move(ref())};
+    }
+    
+    auto choose() {
+	return Choose{std::move(ref())};
     }
     
     template<template <class...> class C = std::vector>

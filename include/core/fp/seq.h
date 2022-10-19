@@ -4,6 +4,7 @@
 #pragma once
 #include "core/fp/detail/seq/alternate.h"
 #include "core/fp/detail/seq/chaining.h"
+#include "core/fp/detail/seq/choose.h"
 #include "core/fp/detail/seq/collect.h"
 #include "core/fp/detail/seq/concat.h"
 #include "core/fp/detail/seq/filter.h"
