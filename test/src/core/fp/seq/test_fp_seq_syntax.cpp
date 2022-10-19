@@ -5,6 +5,8 @@
 #include "core/fp/seq.h"
 #include "coro/stream/stream.h"
 
+using namespace std::string_literals;
+
 template<class T>
 class Fixed : public T {
     using T::T;
@@ -129,6 +131,13 @@ TEST(FpSeq, DotIota)
 	auto r = iota(7, 1, 2).collect();
 	EXPECT_EQ(r, expected);
     }
+}
+
+TEST(FpSeq, DotJoin)
+{
+    std::vector<std::string> strs = { "abc", "def", "ghi" };
+    auto r = source(strs).join(",");
+    EXPECT_EQ(r, "abc,def,ghi"s);
 }
 
 TEST(FpSeq, DotOnce)

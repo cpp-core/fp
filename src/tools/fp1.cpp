@@ -9,15 +9,12 @@
 
 using core::fp::source;
 using namespace core::fp::chaining;
-
-auto getdata() {
-    return std::vector<int>{1, 2, 3};
-}
+using namespace std::string_literals;
 
 int main(int argc, const char *argv[]) {
-    std::vector<int> values{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    auto r = source(values).filter([](int n) { return true; }).collect();
+    std::vector<std::string> strs = { "abc", "def", "ghi" };
+    
+    auto r = source(strs).fold(""s, [](auto a, auto b) { return a + ":"s + b; });
 
     for (auto n : r)
 	std::cout << n << " ";

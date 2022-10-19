@@ -2,6 +2,7 @@
 //
 
 #pragma once
+#include <string>
 #include <vector>
 #include "core/fp/detail/seq/util.h"
 
@@ -75,6 +76,18 @@ struct Interface {
     template<class A, class R>
     auto fold(A&& acc, R&& reducer) {
 	auto f = Fold{std::move(ref()), std::forward<A>(acc), std::forward<R>(reducer)};
+	return f.run();
+    }
+
+    auto join(std::string_view sep) {
+	auto f = Fold{std::move(ref()),
+	    std::string(""),
+	    [=](auto acc, auto value) {
+		if (acc.size() == 0)
+		    return value;
+		return acc + std::string(sep) + value;
+	    }
+	};
 	return f.run();
     }
 
