@@ -92,6 +92,14 @@ TEST(FpSeq, DotFilter)
     EXPECT_EQ(r2, data);
 }
 
+TEST(FpSeq, DotFlatten)
+{
+    std::vector<int> expected = {0, 1, 2, 3, 4, 5};
+    std::vector<std::tuple<int,int>> data = {{ 0, 1}, {2, 3}, {4, 5}};
+    auto r = source(data).flatten().collect();
+    EXPECT_EQ(r, expected);
+}
+
 TEST(FpSeq, DotFold)
 {
     Fixed<std::vector<int>> data;

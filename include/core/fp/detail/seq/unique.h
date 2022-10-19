@@ -20,10 +20,10 @@ struct Unique : Interface<Unique<S, F>> {
     std::optional<value_type> next() {
 	while (auto p = seq_.next()) {
 	    auto key = function_(*p);
-	    if (keys_.contains(key))
-		continue;
-	    keys_.insert(key);
-	    return *p;
+	    if (not keys_.contains(key)) {
+		keys_.insert(key);
+		return *p;
+	    }
 	}
 	return std::nullopt;
     }

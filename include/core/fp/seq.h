@@ -8,6 +8,7 @@
 #include "core/fp/detail/seq/collect.h"
 #include "core/fp/detail/seq/concat.h"
 #include "core/fp/detail/seq/filter.h"
+#include "core/fp/detail/seq/flatten.h"
 #include "core/fp/detail/seq/fold.h"
 #include "core/fp/detail/seq/iota.h"
 #include "core/fp/detail/seq/once.h"

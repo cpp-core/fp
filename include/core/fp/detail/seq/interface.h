@@ -22,6 +22,9 @@ struct Concat;
 template<Sequence S, SequencePredicate P>
 struct Filter;
 
+template<Sequence S>
+struct Flatten;
+
 template<Sequence S, class A, class R>
 struct Fold;
 
@@ -63,6 +66,10 @@ struct Interface {
     template<SequencePredicate P>
     auto filter(P&& predicate) {
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
+    }
+
+    auto flatten() {
+	return Flatten{std::move(ref())};
     }
 
     template<class A, class R>
