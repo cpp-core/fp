@@ -84,8 +84,8 @@ struct Interface {
 	    std::string(""),
 	    [=](auto acc, auto value) {
 		if (acc.size() == 0)
-		    return value;
-		return acc + std::string(sep) + value;
+		    return std::string(value);
+		return acc + std::string(sep) + std::string(value);
 	    }
 	};
 	return f.run();
