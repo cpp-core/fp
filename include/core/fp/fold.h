@@ -4,8 +4,7 @@
 #pragma once
 #include <stdexcept>
 
-namespace core {
-inline namespace fp {
+namespace core::fp {
 
 auto fold_l(auto begin, auto end, auto value, auto op) {
     while (begin != end)
@@ -31,5 +30,4 @@ auto all(const auto& c, auto pred) {
     return fold_l(c, true, [&](bool value, const auto& elem) { return value and pred(elem); });
 }
 
-}; // fp
-}; // end ns core
+}; // core::fp
