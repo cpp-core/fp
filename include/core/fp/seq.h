@@ -10,6 +10,7 @@
 #include "core/fp/detail/seq/filter.h"
 #include "core/fp/detail/seq/flatten.h"
 #include "core/fp/detail/seq/fold.h"
+#include "core/fp/detail/seq/group.h"
 #include "core/fp/detail/seq/iota.h"
 #include "core/fp/detail/seq/once.h"
 #include "core/fp/detail/seq/repeat.h"

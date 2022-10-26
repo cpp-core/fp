@@ -29,6 +29,9 @@ struct Flatten;
 template<Sequence S, class A, class R>
 struct Fold;
 
+template<Sequence S>
+struct Group;
+
 template<Sequence S, class A, class R>
 struct Scan;
 
@@ -77,6 +80,10 @@ struct Interface {
     auto fold(A&& acc, R&& reducer) {
 	auto f = Fold{std::move(ref()), std::forward<A>(acc), std::forward<R>(reducer)};
 	return f.run();
+    }
+
+    auto group(size_t count, bool whole = false) {
+	return Group{std::move(ref()), count, whole};
     }
 
     auto join(std::string_view sep) {
