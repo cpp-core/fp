@@ -38,6 +38,8 @@ struct Apply : Interface<Apply<E,F>> {
 	return source_.compile(ApplyOutput{function_});
     }
 
+    void compile(int);
+
     E source_;
     F function_;
 };

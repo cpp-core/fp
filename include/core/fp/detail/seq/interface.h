@@ -20,7 +20,7 @@ struct Collect;
 template<Sequence S, Sequence... Ss>
 struct Concat;
 
-template<Sequence S, SequencePredicate P>
+template<Sequence S, class P> requires SequencePredicate<S, P>
 struct Filter;
 
 template<Sequence S>
@@ -38,7 +38,7 @@ struct Scan;
 template<Sequence S>
 struct Take;
 
-template<Sequence S, class F>
+template<Sequence S, class F> requires SequenceTransform<S, F>
 struct Transform;
 
 template<Sequence S, class F>
@@ -67,8 +67,9 @@ struct Interface {
 	return Concat{std::move(ref())};
     }
     
-    template<SequencePredicate P>
+    template<class P>
     auto filter(P&& predicate) {
+	static_assert(SequencePredicate<T, P>);
 	return Filter{std::move(ref()), std::forward<P>(predicate)};
     }
 
@@ -109,6 +110,7 @@ struct Interface {
     
     template<class F>
     auto transform(F&& function) {
+	static_assert(SequenceTransform<T, F>);
 	return Transform{std::move(ref()), std::forward<F>(function)};
     }
 

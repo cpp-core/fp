@@ -30,7 +30,7 @@ concept OutputExpression = requires (T t) {
 template<class T>
 concept Expression = requires (T t) {
     typename std::decay_t<T>::value_type;
-    t.compile;
+    { t.compile(5) };
 };
 
 template<Expression E>

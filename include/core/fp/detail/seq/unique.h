@@ -10,7 +10,7 @@ namespace core::fp::detail {
 template<Sequence S, class F>
 struct Unique : Interface<Unique<S, F>> {
     using value_type = sequence_value_t<S>;
-    using K = std::result_of_t<F(value_type)>;
+    using K = std::invoke_result_t<F, value_type>;
     
     Unique(S&& source, F&& function)
 	: seq_(std::forward<S>(source))

@@ -6,10 +6,10 @@
 
 namespace core::fp::detail {
 
-template<Sequence S, class F>
+template<Sequence S, class F> requires SequenceTransform<S, F>
 struct Transform : Interface<Transform<S,F>> {
     using input_value_type = sequence_value_t<S>;
-    using value_type = std::result_of_t<F&(input_value_type)>;
+    using value_type = std::invoke_result_t<F, input_value_type>;
 
     Transform(S&& source, F&& function)
 	: seq_(std::forward<S>(source))

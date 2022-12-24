@@ -6,7 +6,7 @@
 
 namespace core::fp::detail {
 
-template<Sequence S, SequencePredicate P>
+template<Sequence S, class P> requires SequencePredicate<S, P>
 struct Filter : Interface<Filter<S,P>> {
     using value_type = sequence_value_t<S>;
 

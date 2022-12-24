@@ -31,7 +31,7 @@ template<class O, class A, class R> ScanOutput(O&&, A&, R&) -> ScanOutput<O,A&,R
 
 template<Expression E, class A, class R>
 struct Scan : Interface<Scan<E, A, R>> {
-    using value_type = std::result_of_t<R&(expr_value_t<E>, expr_value_t<E>)>;
+    using value_type = std::invoke_result_t<R, expr_value_t<E>, expr_value_t<E>>;
     
     Scan(E&& source, A&& acc, R&& reducer)
 	: source_(std::forward<E>(source))

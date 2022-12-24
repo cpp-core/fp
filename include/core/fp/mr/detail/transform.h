@@ -27,7 +27,7 @@ template<class O, class F> TransformOutput(O&&, F&) -> TransformOutput<O,F&>;
 
 template<Expression E, class F>
 struct Transform : Interface<Transform<E,F>> {
-    using value_type = std::result_of_t<F&(expr_value_t<E>)>;
+    using value_type = std::invoke_result_t<F, expr_value_t<E>>;
     
     Transform(E&& source, F&& function)
 	: source_(std::forward<E>(source))

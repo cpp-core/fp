@@ -12,14 +12,13 @@ concept Sequence = requires(T t) {
     typename std::decay_t<T>::value_type;
 };
 
-template<class T>
-concept SequencePredicate = requires(T t) {
-    t.operator();
-};
+template<class S, class P>
+concept SequencePredicate = Sequence<S> and
+    std::is_same_v<std::invoke_result_t<P, typename S::value_type>, bool>;
 
-template<class T>
-concept SequenceTransform = requires(T t) {
-    t.operator();
+template<class S, class T>
+concept SequenceTransform = Sequence<S> and requires {
+    std::invoke_result<T, typename S::value_type>();
 };
 
 template<Sequence Seq>
