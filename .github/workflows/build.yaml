@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Requirements
-      run: sudo apt-get install -y clang-17 libc++-17-dev libc++abi-17-dev
+      run: sudo apt-get install -y clang-16 libc++-16-dev libc++abi-16-dev
       
     - name: Checkout fp
       uses: actions/checkout@v2
@@ -27,8 +27,8 @@ jobs:
         
     - name: Build and run the tests
       run: |
-        export CC=clang-17
-        export CXX=clang++-17
+        export CC=clang-16
+        export CXX=clang++-16
         mkdir fp/build && pushd fp/build
         cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/opt ..
         make
