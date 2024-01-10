@@ -1,4 +1,4 @@
-// Copyright (C) 2022 by Mark Melton
+// Copyright (C) 2022, 2024 by Mark Melton
 //
 
 #pragma once
@@ -29,5 +29,8 @@ struct Fold : Interface<Fold<S, A, R>> {
     A acc_;
     R reducer_;
 };
+
+template<class S, class A, class R> Fold(S&&, A&&, R&&) -> Fold<S, A, R>;
+
 
 }; // core::fp::detail

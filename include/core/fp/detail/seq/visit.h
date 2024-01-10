@@ -30,4 +30,6 @@ struct Visit : Interface<Visit<S, A, R>> {
     R reducer_;
 };
 
+template<class S, class A, class R> Visit(S&&, A&&, R&&) -> Visit<S, A, R>;
+
 }; // core::fp::detail
