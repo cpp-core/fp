@@ -1,4 +1,4 @@
-// Copyright (C) 2022 by Mark Melton
+// Copyright (C) 2022, 2024 by Mark Melton
 //
 
 #pragma once
@@ -19,4 +19,5 @@
 #include "core/fp/detail/seq/take.h"
 #include "core/fp/detail/seq/transform.h"
 #include "core/fp/detail/seq/unique.h"
+#include "core/fp/detail/seq/visit.h"
 #include "core/fp/detail/seq/zip.h"

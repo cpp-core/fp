@@ -1,4 +1,4 @@
-// Copyright (C) 2022 by Mark Melton
+// Copyright (C) 2022, 2024 by Mark Melton
 //
 
 #pragma once
@@ -44,6 +44,9 @@ struct Transform;
 template<Sequence S, class F>
 struct Unique;
 
+template<Sequence S, class A, class F>
+struct Visit;
+
 template<Sequence... Ss>
 struct Zip;
 
@@ -88,12 +91,12 @@ struct Interface {
     }
 
     auto join(std::string_view sep) {
-	auto f = Fold{std::move(ref()),
+	auto f = Visit{std::move(ref()),
 	    std::string(""),
-	    [=](auto acc, auto value) {
-		if (acc.size() == 0)
-		    return std::string(value);
-		return acc + std::string(sep) + std::string(value);
+	    [=](auto& acc, auto value) {
+		if (not acc.empty())
+		    acc += sep;
+		acc += value;
 	    }
 	};
 	return f.run();
@@ -121,6 +124,12 @@ struct Interface {
 
     auto unique() {
 	return Unique{std::move(ref()), [](const auto& value) { return value; }};
+    }
+
+    template<class A, class R>
+    auto visit(A&& acc, R&& reducer) {
+	auto f = Visit{std::move(ref()), std::forward<A>(acc), std::forward<R>(reducer)};
+	return f.run();
     }
 
     auto zip() {
