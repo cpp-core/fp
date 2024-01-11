@@ -3,6 +3,7 @@
 
 #pragma once
 #include "core/fp/detail/seq/alternate.h"
+#include "core/fp/detail/seq/apply.h"
 #include "core/fp/detail/seq/chaining.h"
 #include "core/fp/detail/seq/choose.h"
 #include "core/fp/detail/seq/collect.h"
@@ -15,6 +16,7 @@
 #include "core/fp/detail/seq/once.h"
 #include "core/fp/detail/seq/repeat.h"
 #include "core/fp/detail/seq/scan.h"
+#include "core/fp/detail/seq/side_effect.h"
 #include "core/fp/detail/seq/source.h"
 #include "core/fp/detail/seq/take.h"
 #include "core/fp/detail/seq/transform.h"

@@ -1,4 +1,4 @@
-// Copyright (C) 2022 by Mark Melton
+// Copyright (C) 2022, 2024 by Mark Melton
 //
 
 #pragma once
@@ -35,6 +35,8 @@ template<class C> Source(C&&) -> Source<C>;
 
 namespace core::fp {
 
+// Adapt container `C` to be used as the source for a chain of
+// operations.
 template<class C>
 auto source(C&& data) {
     return detail::Source{std::forward<C>(data)};
