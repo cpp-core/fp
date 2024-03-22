@@ -1,9 +1,11 @@
-// Copyright (C) 2021, 2022 by Mark Melton
+// Copyright (C) 2021, 2022, 2024 by Mark Melton
 //
 
 #pragma once
 #include <string>
 #include <variant>
+#include <exception>
+
 #include "core/mp/same.h"
 #include "core/fp/detail/decorator.h"
 #include "core/fp/detail/any_type.h"
